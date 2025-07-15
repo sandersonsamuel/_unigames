@@ -1,4 +1,4 @@
-import { AuthUser } from "@/@types/user";
+import { AuthUser } from "@/types/user";
 import { proxy } from "valtio";
 
 export type AuthState = {

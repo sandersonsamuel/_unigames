@@ -1,9 +1,9 @@
-import { desc, eq, sql } from "drizzle-orm";
+import { desc, eq, sql, and, isNull } from "drizzle-orm";
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import z from "zod/v4";
-import { db } from "../../db/connection.js";
-import { schema } from "../../db/schemas/index.js";
-import { gameSchema } from "../../schemas/game.js";
+import { db } from "../../db/connection";
+import { schema } from "../../db/schemas/index";
+import { gameSchema } from "../../schemas/game";
 
 export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
   app.get("/", {
@@ -62,7 +62,9 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
       purchasesCount: sql`COUNT(${schema.purchases.id})`.mapWith(Number)
     })
       .from(schema.games)
-      .leftJoin(schema.purchases, eq(schema.games.id, schema.purchases.gameId))
+      .leftJoin(schema.purchases, and(eq(schema.games.id, schema.purchases.gameId),
+        isNull(schema.purchases.deletedAt),
+        eq(schema.purchases.paymentStatus, "PAID")))
       .where(eq(schema.games.id, id))
       .groupBy(schema.games.id)
       .execute();

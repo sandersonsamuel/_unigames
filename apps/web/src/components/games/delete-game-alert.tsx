@@ -1,6 +1,5 @@
 "use client";
 
-import { deleteGameAction } from "@/app/(protected)/(admin)/games/actions";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,17 +11,20 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Trash2 } from "lucide-react";
+import { Trash } from "lucide-react";
 import toast from "react-hot-toast";
+import { useDeleteGameMutation } from "@/http/hooks/use-games";
 
 type Props = {
   gameId: string;
 };
 
 export const DeleteGameAlert = ({ gameId }: Props) => {
+  const { mutateAsync: deleteGame } = useDeleteGameMutation();
+
   const handleDeleteGame = async () => {
     try {
-      await deleteGameAction(gameId);
+      await deleteGame(gameId);
       toast.success("Jogo excluído com sucesso!");
     } catch (error) {
       if (error instanceof Error) {
@@ -35,7 +37,7 @@ export const DeleteGameAlert = ({ gameId }: Props) => {
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <button className="bg-destructive/85 p-1 shadow-2xl hover:bg-destructive/70 transition-colors">
-          <Trash2 size={20} />
+          <Trash size={20} />
         </button>
       </AlertDialogTrigger>
       <AlertDialogContent>

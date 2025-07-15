@@ -1,4 +1,4 @@
-import { PaymentStatus } from '@/@types/payment-status'
+import { PaymentStatus } from '@/types/payment-status'
 import { CheckCircle, Clock, XCircle } from 'lucide-react'
 
 export const getStatusConfig = (status: PaymentStatus) => {

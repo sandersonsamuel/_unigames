@@ -1,5 +1,5 @@
-import { GameByIdType, GameResponseType } from "@/@types/games";
-import { SubscriptionType } from "@/@types/subscription";
+import { GameByIdType, GameResponseType } from "@/types/games";
+import { SubscriptionType } from "@/types/subscription";
 import { createContext, useContext } from "react";
 import { UseFormReturn } from "react-hook-form";
 

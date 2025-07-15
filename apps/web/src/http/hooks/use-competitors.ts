@@ -1,0 +1,12 @@
+import { useQuery } from '@tanstack/react-query'
+import { getCompetitorsByPurchase } from '../api/competitors-api'
+
+const COMPETITORS_QUERY_KEY = ['competitors']
+
+export const useCompetitorsQuery = (purchaseId: string) => {
+  return useQuery({
+    queryKey: [COMPETITORS_QUERY_KEY, purchaseId],
+    queryFn: () => getCompetitorsByPurchase(purchaseId),
+    enabled: !!purchaseId,
+  })
+}

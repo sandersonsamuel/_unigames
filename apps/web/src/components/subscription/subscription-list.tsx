@@ -1,19 +1,23 @@
-import { getUser } from "@/app/actions/user";
-import { getPurchasesByUserIdQuery } from "@/http/queries/purchases/get-purchase";
-import { PurchaseCard } from "./purchase-card";
+"use client";
 
-export const SubscriptionList = async () => {
-  const user = await getUser();
+import { usePurchasesByUserIdQuery } from "@/http/hooks/use-purchases";
+import { authStore } from "@/store/auth";
+import { useSnapshot } from "valtio";
+import { PurchaseCard, PurchaseCardSkeleton } from "../purchase/purchase-card";
 
-  if (user) {
-    const purchases = await getPurchasesByUserIdQuery(user.id);
+export const SubscriptionList = () => {
+  const { user } = useSnapshot(authStore);
 
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-        {purchases.map((purchase) => (
+  const { data: purchases, isLoading } = usePurchasesByUserIdQuery(user?.id);
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+      {purchases &&
+        purchases.map((purchase) => (
           <PurchaseCard key={purchase.id} purchase={purchase} />
         ))}
-      </div>
-    );
-  }
+      {isLoading &&
+        [1, 2, 3].map((_, index) => <PurchaseCardSkeleton key={index} />)}
+    </div>
+  );
 };

@@ -1,8 +1,8 @@
 "use server";
 
-import { ActionType } from "@/@types/actions";
-import { SigninFormValues } from "@/@types/signin";
-import { SupabaseUser } from "@/@types/user";
+import { ActionType } from "@/types/actions";
+import { SigninFormValues } from "@/types/signin";
+import { SupabaseUser } from "@/types/user";
 import { env } from "@/env";
 import { createClient } from "@/services/supabase/server";
 
@@ -11,18 +11,30 @@ export const signinAction = async (
 ): Promise<ActionType<SupabaseUser>> => {
   const supabase = await createClient();
 
-  const { error, data: user } = await supabase.auth.signInWithPassword(data);
-
-  if (error?.code == "invalid_credentials") {
-    return { error: "Email ou senha inválidos" };
-  }
+  const { error, data: { user } } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    return { error: error.message };
+    return {
+      message: error.code === "invalid_credentials" ? "Email ou senha inválidos" : error.message,
+      status: 'error',
+    };
+  }
+
+  if (!user) {
+    return {
+      message: 'User not found',
+      status: 'error',
+    }
   }
 
   return {
-    data: user,
+    message: 'Signin successful',
+    status: 'success',
+    data: {
+      id: user.id,
+      email: user.email!,
+      role: user.user_metadata.role,
+    },
   };
 };
 

@@ -14,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetGame } from "@/http/queries/games/hooks/get-game";
 import { Button } from "../ui/button";
 import {
   FormControl,
@@ -26,6 +25,7 @@ import {
 } from "../ui/form";
 import { useNewSubscription } from "./new-subscription-provider";
 import { useEffect } from "react";
+import { useGameByIdQuery } from "@/http/hooks/use-games";
 
 export const FirstStepSubscription = () => {
   const {
@@ -71,7 +71,7 @@ export const SubscriptionGameCard = () => {
   const { form, nextStep, setCurrentGame } = useNewSubscription();
   const gameId = form.watch("gameId");
 
-  const { data: game } = useGetGame(gameId);
+  const { data: game } = useGameByIdQuery(gameId);
 
   const onNext = () => {
     form.trigger("gameId").then(() => {

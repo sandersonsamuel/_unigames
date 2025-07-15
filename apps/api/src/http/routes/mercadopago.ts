@@ -1,11 +1,12 @@
-import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
-import z from "zod/v4";
-import { MercadoPagoConfig, Payment } from "mercadopago";
-import { db } from "../../db/connection.js";
-import { schema } from "../../db/schemas/index.js";
 import { eq } from "drizzle-orm";
-import { env } from "../../env.js";
-import { verifyMercadoPagoSignature } from "../../http/security/mercadopago-signature.js";
+import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
+import { MercadoPagoConfig, Payment } from "mercadopago";
+import z from "zod/v4";
+import { db } from "../../db/connection";
+import { schema } from "../../db/schemas/index";
+import { env } from "../../env";
+import { verifyMercadoPagoSignature } from "../../http/security/mercadopago-signature";
+import { competitorsType } from "../../schemas/competitors";
 
 const client = new MercadoPagoConfig({
   accessToken: env.MP_ACCESS_TOKEN,
@@ -39,10 +40,20 @@ export const mercadoPagoRoutes: FastifyPluginAsyncZod = async (app) => {
     },
     async (request, reply) => {
       try {
+        console.log("--- [Mercado Pago Webhook] ---");
+        console.log("Request Headers:", JSON.stringify(request.headers, null, 2));
+        console.log("Request Body:", JSON.stringify(request.body, null, 2));
+
         const isValid = verifyMercadoPagoSignature(request);
+
+        console.log(`Signature validation result: ${isValid}`);
+
         if (!isValid) {
+          console.error("Signature verification failed. Aborting.");
           return reply.status(401).send({ error: "Invalid signature" });
         }
+
+        console.log("Signature successfully verified.");
 
         const { type, data } = request.body as { type: string; data: { id: string } }
 
@@ -52,8 +63,11 @@ export const mercadoPagoRoutes: FastifyPluginAsyncZod = async (app) => {
             const paymentData = await payment.get({ id: data.id });
 
             if (!paymentData) {
-              return reply.status(404).send({ message: "Payment not found" });
+              console.log("Payment data not found");
+              return reply.status(404).send({ message: "Payment data not found" });
             }
+
+            console.log(paymentData)
 
             const purchases = await db.select({
               id: schema.purchases.id,
@@ -67,13 +81,25 @@ export const mercadoPagoRoutes: FastifyPluginAsyncZod = async (app) => {
             }
 
             if (paymentData.status === "approved" && paymentData.date_approved) {
+
+              const paymentMethod = paymentData.payment_type_id === "credit_card" ? "CARD" : "PIX"
+              const competitors = paymentData.metadata.competitors as competitorsType
+
               await db
                 .update(schema.purchases)
                 .set({
                   paymentStatus: "PAID",
+                  paymentMethod: paymentMethod,
                   paidAt: new Date(paymentData.date_approved).toISOString(),
                 })
                 .where(eq(schema.purchases.id, purchase.id));
+
+              if (competitors.length > 0) {
+                await db.insert(schema.competitors).values(competitors.map((competitor) => ({
+                  ...competitor,
+                  purchaseId: purchase.id
+                })))
+              }
             }
 
             if (paymentData.status === "expired" || paymentData.status === "cancelled") {
@@ -81,6 +107,7 @@ export const mercadoPagoRoutes: FastifyPluginAsyncZod = async (app) => {
                 .update(schema.purchases)
                 .set({
                   paymentStatus: "CANCELLED",
+                  deletedAt: new Date().toString(),
                 })
                 .where(eq(schema.purchases.id, purchase.id));
             }

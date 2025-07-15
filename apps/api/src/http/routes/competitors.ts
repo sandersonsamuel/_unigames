@@ -1,8 +1,8 @@
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import z from "zod/v4";
-import { db } from "../../db/connection.js";
-import { schema } from "../../db/schemas/index.js";
-import { eq } from 'drizzle-orm'
+import { db } from "../../db/connection";
+import { schema } from "../../db/schemas/index";
+import { and, eq, isNull } from 'drizzle-orm'
 
 export const competitorsRoutes: FastifyPluginAsyncZod = async (app) => {
   app.get("/:purchaseId", {
@@ -20,11 +20,27 @@ export const competitorsRoutes: FastifyPluginAsyncZod = async (app) => {
             registration: z.string().nullable(),
           })
         ),
+        404: z.object({
+          message: z.string(),
+        }),
       },
     }
   }, async (request, reply) => {
 
     const { purchaseId } = request.params
+
+    const purchase = await db.select({
+      id: schema.purchases.id,
+    }).from(schema.purchases)
+      .where(and(
+        eq(schema.purchases.id, purchaseId),
+        isNull(schema.purchases.deletedAt)))
+
+    if (!purchase || purchase.length === 0) {
+      return reply.status(404).send({
+        message: "Purchase not found"
+      })
+    }
 
     const competitors = await db.select({
       id: schema.competitors.id,
@@ -32,6 +48,6 @@ export const competitorsRoutes: FastifyPluginAsyncZod = async (app) => {
       registration: schema.competitors.registration,
     }).from(schema.competitors).where(eq(schema.competitors.purchaseId, purchaseId))
 
-    reply.status(200).send(competitors)
+    return reply.status(200).send(competitors)
   })
 }

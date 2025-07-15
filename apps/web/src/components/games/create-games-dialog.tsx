@@ -1,7 +1,6 @@
 "use client";
 
-import { CreateGameType } from "@/@types/games";
-import { createGameAction } from "@/app/(protected)/(admin)/games/actions";
+import { CreateGameType } from "@/types/games";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +11,6 @@ import {
 import { createGamesSchema } from "@/schemas/games";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { Button } from "../ui/button";
 import {
   Form,
@@ -24,30 +22,33 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import toast from "react-hot-toast";
 import { Checkbox } from "../ui/checkbox";
+import { useCreateGameMutation } from "@/http/hooks/use-games";
 
 export const CreateGamesDialog = () => {
+  const { mutateAsync: createGame } = useCreateGameMutation();
   const form = useForm<CreateGameType>({
     resolver: zodResolver(createGamesSchema),
     defaultValues: {
+      name: "",
       description: "",
       image: "",
-      name: "",
       price: 0,
       vacancies: 0,
-      teamSize: 0,
-      competition: true,
+      teamSize: 1,
+      competition: false,
     },
   });
 
-  const onSubmit = async (data: CreateGameType) => {
+  const handleCreateGame = async (data: CreateGameType) => {
     try {
-      await createGameAction(data);
-      toast.success("Jogo adicionado com sucesso!");
-      form.reset();
+      await createGame(data);
+      toast.success("Jogo criado com sucesso!");
     } catch (error) {
-      toast.error("Erro ao adicionar o jogo!");
-      console.log(error);
+      if (error instanceof Error) {
+        toast.error(error.message);
+      }
     }
   };
 
@@ -62,7 +63,7 @@ export const CreateGamesDialog = () => {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(handleCreateGame)} className="space-y-4">
             <FormField
               control={form.control}
               name="name"

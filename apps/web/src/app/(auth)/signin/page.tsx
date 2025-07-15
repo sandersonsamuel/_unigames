@@ -1,6 +1,6 @@
 "use client";
 
-import { SigninFormValues } from "@/@types/signin";
+import { SigninFormValues } from "@/types/signin";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -35,10 +35,10 @@ const SigninPage = () => {
   });
 
   const onSubmit = async (data: SigninFormValues) => {
-    const { error } = await signinAction(data);
+    const response = await signinAction(data);
 
-    if (error) {
-      return toast.error(error);
+    if (response.status === 'error') {
+      return toast.error(response.message);
     }
 
     toast.success("Login realizado com sucesso!");

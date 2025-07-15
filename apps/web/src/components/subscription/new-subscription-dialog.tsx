@@ -1,7 +1,7 @@
 "use client";
 
-import { GameByIdType, GameResponseType } from "@/@types/games";
-import { SubscriptionType } from "@/@types/subscription";
+import { GameByIdType, GameResponseType } from "@/types/games";
+import { SubscriptionType } from "@/types/subscription";
 import { newSubscriptionContext } from "@/components/subscription/new-subscription-provider";
 import {
   Dialog,
@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useCreateSubscription } from "@/http/mutations/purchases/create-subscription";
+import { useCreateSubscriptionMutation } from '@/http/hooks/use-purchases'
 import { newSubscriptionSchema } from "@/schemas/subscription";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowBigLeft } from "lucide-react";
@@ -31,7 +31,7 @@ export const NewSubscriptionDialog = ({ gamesPromise }: Props) => {
   const [step, setStep] = useState<number>(0);
   const [currentGame, setCurrentGame] = useState<GameByIdType | null>(null);
 
-  const { mutateAsync: createSubscription } = useCreateSubscription();
+  const { mutateAsync: createSubscription } = useCreateSubscriptionMutation()
 
   const form = useForm<SubscriptionType>({
     resolver: zodResolver(newSubscriptionSchema),

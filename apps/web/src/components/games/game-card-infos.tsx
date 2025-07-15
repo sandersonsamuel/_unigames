@@ -6,13 +6,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Game } from "@prisma/client";
 import Image from "next/image";
 import { DeleteGameAlert } from "./delete-game-alert";
 import { EditGameDialog } from "./edit-game-dialog";
+import { GameByIdType } from "@/types/games";
 
 interface GameCardInfosProps {
-  game: Game;
+  game: GameByIdType;
 }
 
 export const GameCardInfos = ({ game }: GameCardInfosProps) => {

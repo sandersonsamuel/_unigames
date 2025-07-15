@@ -1,6 +1,6 @@
 "use client";
 
-import { GameResponseType } from "@/@types/games";
+import { GameResponseType } from "@/types/games";
 import { GameCard } from "@/components/games/game-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChevronLeft, ChevronRight } from "lucide-react";

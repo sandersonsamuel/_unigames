@@ -14,11 +14,11 @@ import {
 } from "@/components/ui/card";
 import Link from "next/link";
 import { Suspense } from "react";
-import { getGamesQuery } from "@/http/queries/games/get-games";
+import { getGames } from "@/http/api/games-api";
 
 export default async function Subscribe() {
   const logoUnigames = IMAGES.get("logo-unigames");
-  const games = getGamesQuery(true);
+  const games = getGames();
 
   return (
     <div className="flex flex-col items-center p-5 gap-3">

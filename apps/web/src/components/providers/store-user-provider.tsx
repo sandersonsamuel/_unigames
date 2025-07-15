@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthUser } from "@/@types/user";
+import { AuthUser } from "@/types/user";
 import { authStore } from "@/store/auth";
 
 export const StoreUserProvider = ({

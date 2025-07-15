@@ -1,6 +1,6 @@
 import type { FastifyRequest } from "fastify";
 import crypto from "node:crypto";
-import { env } from "../../env.ts";
+import { env } from "../../env";
 
 export function verifyMercadoPagoSignature(request: FastifyRequest): boolean {
   const signature = request.headers["x-signature"] as string;

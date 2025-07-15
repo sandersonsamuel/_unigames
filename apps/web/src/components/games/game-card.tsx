@@ -1,6 +1,6 @@
 "use client";
 
-import { GameResponseType } from "@/@types/games";
+import { GameResponseType } from "@/types/games";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "motion/react";
 import Image from "next/image";

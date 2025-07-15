@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateGameType } from "@/@types/games";
+import { CreateGameType, GameByIdType } from "@/types/games";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import { createGamesSchema } from "@/schemas/games";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Game } from "@prisma/client";
 import { SquarePen } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { Button } from "../ui/button";
@@ -24,15 +23,16 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { updateGameAction } from "@/app/(protected)/(admin)/games/actions";
 import toast from "react-hot-toast";
 import { Checkbox } from "../ui/checkbox";
+import { useUpdateGameMutation } from "@/http/hooks/use-games";
 
 type Props = {
-  game: Game;
+  game: GameByIdType;
 };
 
 export const EditGameDialog = ({ game }: Props) => {
+  const { mutateAsync: updateGame } = useUpdateGameMutation()
   const form = useForm<CreateGameType>({
     resolver: zodResolver(createGamesSchema),
     defaultValues: {
@@ -47,21 +47,14 @@ export const EditGameDialog = ({ game }: Props) => {
   });
 
   const handleEditGame = async (data: CreateGameType) => {
-    const editedGame = {
-      ...game,
-      ...data,
-    };
-
     try {
-      await updateGameAction(game.id, editedGame);
+      await updateGame({ gameId: game.id, game: data });
       toast.success("Jogo editado com sucesso!");
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
       }
     }
-
-    return editedGame;
   };
 
   return (

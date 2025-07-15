@@ -1,6 +1,6 @@
 "use client";
 
-import { SignupFormValues } from "@/@types/signup";
+import { SignupFormValues } from "@/types/signup";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -36,9 +36,9 @@ const SignupPage = () => {
   });
 
   const onSubmit = async (data: SignupFormValues) => {
-    const { error } = await signupAction(data);
-    if (error) {
-      return toast.error(error);
+    const response = await signupAction(data);
+    if (response.status === 'error') {
+      return toast.error(response.message);
     }
 
     router.push("/verify/email");

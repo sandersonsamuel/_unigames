@@ -1,4 +1,4 @@
-import { PersonsTypeResponse, PurchaseType } from "@/@types/purchase";
+import { PersonsTypeResponse, PurchaseType } from "@/types/purchase";
 import { Badge } from "@/components/ui/badge";
 import {
   DialogContent,
@@ -11,8 +11,8 @@ import { Calendar, CreditCard, QrCode, Trophy, Users } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { useCallback, useRef, useState } from "react";
 import { Button } from "../ui/button";
-import { getPaymentMethodLabel, getStatusConfig } from "./utils";
-import { useCompetitors } from "@/http/queries/competitors/get-competitors";
+import { getPaymentMethodLabel, getStatusConfig } from "../subscription/utils";
+import { useCompetitorsQuery } from "@/http/hooks/use-competitors";
 
 interface PurchaseDetailsDialogProps {
   purchase: PurchaseType;
@@ -24,7 +24,9 @@ export function PurchaseDetailsDialog({
   const [selectedCompetitor, setSelectedCompetitor] =
     useState<PersonsTypeResponse | null>(null);
 
-  const { data: competitors } = useCompetitors(purchase.id);
+  const { data: competitors } = useCompetitorsQuery(purchase.id);
+
+  console.log(competitors, purchase);
 
   const statusConfig = getStatusConfig(purchase.paymentStatus);
   const StatusIcon = statusConfig.icon;

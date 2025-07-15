@@ -1,6 +1,6 @@
-import { competitors } from "./competitors.js";
-import { games } from "./games.js";
-import { purchases } from "./purchases.js";
+import { competitors } from "./competitors";
+import { games } from "./games";
+import { purchases } from "./purchases";
 
 export const schema = {
   games,

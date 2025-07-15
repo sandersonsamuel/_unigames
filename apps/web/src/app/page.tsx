@@ -1,10 +1,10 @@
+import { getGames } from "@/http/api/games-api";
 import {
   SwiperGamesList,
   SwiperGamesListSkeleton,
 } from "@/components/games/swiper-games-list";
 import { MainInfoSection } from "@/components/main-info-section";
 import StopWatch from "@/components/stop-watch";
-import { getGamesQuery } from "@/http/queries/games/get-games";
 
 import type { Metadata } from "next";
 import { Suspense } from "react";
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const games = getGamesQuery()
+  const games = getGames()
 
   return (
     <main className="min-h-screen mt-10 md:mt-20">

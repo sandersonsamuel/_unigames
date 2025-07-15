@@ -1,11 +1,12 @@
-import { eq } from "drizzle-orm";
+import { and, eq, isNull } from "drizzle-orm";
 import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import { MercadoPagoConfig, Preference } from "mercadopago";
 import z from "zod/v4";
-import { db } from "../../db/connection.js";
-import { schema } from "../../db/schemas/index.js";
-import { paymentMethod, paymentStatus } from "../../db/schemas/purchases.js";
-import { env } from "../../env.js";
+import { db } from "../../db/connection";
+import { schema } from "../../db/schemas/index";
+import { paymentMethod, paymentStatus } from "../../db/schemas/purchases";
+import { env } from "../../env";
+import { competitorsSchema } from "../../schemas/competitors";
 
 const mpClient = new MercadoPagoConfig({
   accessToken: env.MP_ACCESS_TOKEN,
@@ -20,10 +21,7 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
           gameId: z.uuid(),
           userId: z.uuid(),
           email: z.email(),
-          competitors: z.array(z.object({
-            name: z.string(),
-            registration: z.string().optional(),
-          })),
+          competitors: competitorsSchema,
         }),
         tags: ["Purchases"],
         summary: "Create a new subscription (payment preference)",
@@ -161,7 +159,6 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
     }
   );
 
-  // Rota para obter compras por usuário
   app.get(
     "/:userId",
     {
@@ -215,7 +212,7 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
         })
         .from(schema.purchases)
         .leftJoin(schema.games, eq(schema.purchases.gameId, schema.games.id))
-        .where(eq(schema.purchases.userId, userId));
+        .where(and(eq(schema.purchases.userId, userId), isNull(schema.purchases.deletedAt)));
 
       reply.status(200).send(purchases);
     }

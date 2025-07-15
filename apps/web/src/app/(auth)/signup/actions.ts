@@ -1,8 +1,8 @@
 "use server";
 
-import { ActionType } from "@/@types/actions";
-import { SignupFormValues } from "@/@types/signup";
-import { SupabaseUser } from "@/@types/user";
+import { ActionType } from "@/types/actions";
+import { SignupFormValues } from "@/types/signup";
+import { SupabaseUser } from "@/types/user";
 import { Role } from "@/constants/role";
 import { env } from "@/env";
 import { createClient } from "@/services/supabase/server";
@@ -12,7 +12,7 @@ export const signupAction = async (
 ): Promise<ActionType<SupabaseUser>> => {
   const supabase = await createClient();
 
-  const { error, data: newUser } = await supabase.auth.signUp({
+  const { error, data: { user } } = await supabase.auth.signUp({
     email: data.email,
     password: data.password,
     options: {
@@ -25,11 +25,26 @@ export const signupAction = async (
   });
 
   if (error) {
-    console.log(error);
-    return { error: error.message };
+    return {
+      message: error.message,
+      status: 'error',
+    };
+  }
+
+  if (!user) {
+    return {
+      message: 'User not created',
+      status: 'error',
+    }
   }
 
   return {
-    data: newUser,
+    message: 'Signup successful',
+    status: 'success',
+    data: {
+      id: user.id,
+      email: user.email!,
+      role: user.user_metadata.role,
+    },
   };
 };
