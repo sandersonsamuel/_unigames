@@ -1,13 +1,13 @@
-import Fastify from 'fastify'
+import awsLambdaFastify from '@fastify/aws-lambda'
+import fastifyCors from '@fastify/cors'
 import fastifySwagger from "@fastify/swagger"
 import fastifySwaggerUi from "@fastify/swagger-ui"
+import Fastify from 'fastify'
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
-import fastifyCors from '@fastify/cors'
-import { env } from './env'
-import { gameRoutes } from './http/routes/games'
-import { purchaseRoutes } from './http/routes/purchases'
-import { mercadoPagoRoutes } from './http/routes/mercadopago'
 import { competitorsRoutes } from './http/routes/competitors'
+import { gameRoutes } from './http/routes/games'
+import { mercadoPagoRoutes } from './http/routes/mercadopago'
+import { purchaseRoutes } from './http/routes/purchases'
 
 const app = Fastify()
 
@@ -54,6 +54,4 @@ app.get('/health', (_, reply) => {
   reply.send('Ok!')
 })
 
-app.listen({ port: env.PORT }, (_, url) => {
-  console.log(`Server running in ${url}`)
-})
+export const handler = awsLambdaFastify(app)
