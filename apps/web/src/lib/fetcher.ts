@@ -6,8 +6,8 @@ class HttpError extends Error {
     message: string
   }
 
-  constructor(response: Response, data: { message:string }) {
-    super(`HTTP error ${response.status}: ${data.message || 'Something went wrong'}`)
+  constructor(response: Response, data: { message: string }) {
+    super(data.message || 'Something went wrong')
     this.response = response
     this.data = data
   }
@@ -29,8 +29,7 @@ export async function fetcher<T>(
     const data = await response.json().catch(() => ({}))
     throw new HttpError(response, data)
   }
-  
-  // if response is empty, return null
+
   const contentType = response.headers.get('content-type')
   if (!contentType || !contentType.includes('application/json')) {
     return null as T

@@ -28,6 +28,7 @@ import { useCreateGameMutation } from "@/http/hooks/use-games";
 
 export const CreateGamesDialog = () => {
   const { mutateAsync: createGame } = useCreateGameMutation();
+
   const form = useForm<CreateGameType>({
     resolver: zodResolver(createGamesSchema),
     defaultValues: {
@@ -63,7 +64,10 @@ export const CreateGamesDialog = () => {
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleCreateGame)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(handleCreateGame)}
+            className="space-y-4"
+          >
             <FormField
               control={form.control}
               name="name"

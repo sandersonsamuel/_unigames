@@ -1,6 +1,5 @@
 "use client";
 
-import { CreateGameType, GameByIdType } from "@/types/games";
 import {
   Dialog,
   DialogContent,
@@ -8,11 +7,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useUpdateGameMutation } from "@/http/hooks/use-games";
 import { createGamesSchema } from "@/schemas/games";
+import { CreateGameType, GameType } from "@/types/games";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SquarePen } from "lucide-react";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 import {
   Form,
   FormControl,
@@ -23,12 +26,9 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import toast from "react-hot-toast";
-import { Checkbox } from "../ui/checkbox";
-import { useUpdateGameMutation } from "@/http/hooks/use-games";
 
 type Props = {
-  game: GameByIdType;
+  game: GameType;
 };
 
 export const EditGameDialog = ({ game }: Props) => {

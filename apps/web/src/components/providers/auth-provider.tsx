@@ -21,8 +21,9 @@ export const AuthProvider = async ({
     <StoreUserProvider
       user={{
         id: user.id,
-        email: user.email,
+        email: user.email!,
         name: user.user_metadata?.name,
+        role: user.user_metadata?.role,
       }}
     >
       {children}

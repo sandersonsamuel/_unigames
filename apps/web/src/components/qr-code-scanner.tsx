@@ -1,17 +1,18 @@
 "use client";
 
+import { useSetTicketRemeeded } from "@/http/hooks/use-competitors";
+import { Html5Qrcode } from "html5-qrcode";
+import { ScanLine } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { Html5Qrcode, Html5QrcodeResult } from "html5-qrcode";
-import { Button } from "./ui/button";
 import toast from "react-hot-toast";
-import { setTicketReedemedAction } from "@/app/(protected)/(admin)/ticket/actions";
-import { QrCode, ScanLine, ScanQrCode } from "lucide-react";
+import { Button } from "./ui/button";
 
 export default function CustomQrCodeScanner() {
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const [isScanning, setIsScanning] = useState(false);
 
-  // Cria o scanner só uma vez
+  const { mutateAsync } = useSetTicketRemeeded();
+
   useEffect(() => {
     scannerRef.current = new Html5Qrcode("reader");
     return () => {
@@ -26,9 +27,9 @@ export default function CustomQrCodeScanner() {
       await scannerRef.current.start(
         { facingMode: "environment" },
         { fps: 10, qrbox: { width: 250, height: 250 } },
-        async (decodedText: string, decodedResult: Html5QrcodeResult) => {
+        async (competitorId: string) => {
           stopScan();
-          toast.promise(setTicketReedemedAction(decodedText), {
+          toast.promise(mutateAsync(competitorId), {
             loading: "Escaneando...",
             success: "Código scaneado com sucesso!",
             error: (err) => err.message,

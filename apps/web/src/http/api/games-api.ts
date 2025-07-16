@@ -1,8 +1,8 @@
 import { fetcher } from '@/lib/fetcher'
-import { CreateGameType, GameByIdType, GameResponseType } from '@/types/games'
+import { CreateGameType, GameByIdType, GameResponseType, GameType } from '@/types/games'
 
-export const getGames = async (competitor: boolean = true): Promise<GameResponseType[]> => {
-  return fetcher<GameResponseType[]>('/games')
+export const getGames = async (): Promise<GameType[]> => {
+  return fetcher<GameType[]>('/games')
 }
 
 export const getGameById = async (gameId: string): Promise<GameByIdType> => {

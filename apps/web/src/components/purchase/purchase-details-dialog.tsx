@@ -26,8 +26,6 @@ export function PurchaseDetailsDialog({
 
   const { data: competitors } = useCompetitorsQuery(purchase.id);
 
-  console.log(competitors, purchase);
-
   const statusConfig = getStatusConfig(purchase.paymentStatus);
   const StatusIcon = statusConfig.icon;
 

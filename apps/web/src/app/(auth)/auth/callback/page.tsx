@@ -9,6 +9,7 @@ import { redirect, useSearchParams } from "next/navigation";
 import { callbackAction } from "./actions";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
+import { Role } from "@/constants/role";
 
 export default function CallbackPage() {
   const params = useSearchParams();
@@ -16,12 +17,14 @@ export default function CallbackPage() {
   const [error, setError] = useState<string | null>(null);
 
   const handleCallback = async () => {
-    const { error } = await callbackAction(code!);
+    const { error, data } = await callbackAction(code!);
     if (error) {
       setError(error.message);
     }
 
-    redirect("/dashboard");
+    redirect(
+      data.user?.user_metadata.role == Role.ADMIN ? "/dashboard" : "subscribe"
+    );
   };
 
   useEffect(() => {
@@ -36,8 +39,8 @@ export default function CallbackPage() {
         {!error && code
           ? "Estamos processando sua autenticação..."
           : !error && !code
-          ? "Código de autenticação inexistente"
-          : "Erro ao autenticar: " + error}
+            ? "Código de autenticação inexistente"
+            : "Erro ao autenticar: " + error}
       </WarningText>
       {!error && code && <Spinner size={64} />}
     </UnigamesWarningLayout>

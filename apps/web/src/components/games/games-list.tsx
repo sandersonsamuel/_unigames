@@ -1,7 +1,7 @@
-import { getGames } from "@/dal/games";
 import { cn } from "@/lib/utils";
 import { HTMLAttributes } from "react";
 import { GameCardInfos } from "./game-card-infos";
+import { getGames } from "@/http/api/games-api";
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   className?: string;

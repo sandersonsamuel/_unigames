@@ -6,13 +6,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { GameType } from "@/types/games";
 import Image from "next/image";
 import { DeleteGameAlert } from "./delete-game-alert";
 import { EditGameDialog } from "./edit-game-dialog";
-import { GameByIdType } from "@/types/games";
 
 interface GameCardInfosProps {
-  game: GameByIdType;
+  game: GameType;
 }
 
 export const GameCardInfos = ({ game }: GameCardInfosProps) => {
@@ -21,7 +21,9 @@ export const GameCardInfos = ({ game }: GameCardInfosProps) => {
       <CardHeader>
         <CardTitle>{game.name}</CardTitle>
         {game.description && (
-          <CardDescription>{game.description}</CardDescription>
+          <CardDescription title={game.description} className="line-clamp-3">
+            {game.description}
+          </CardDescription>
         )}
       </CardHeader>
       <CardContent>
@@ -38,22 +40,28 @@ export const GameCardInfos = ({ game }: GameCardInfosProps) => {
         )}
         <div className="grid w-full items-center gap-1">
           <div className="flex flex-col space-y-1.5">
-            <p className="text-sm font-medium leading-none">Preço:</p>
-            <p className="text-sm text-muted-foreground">
-              R$ {(game.price / 100).toFixed(2)}
+            <p className="text-sm font-medium leading-none">
+              Preço:{" "}
+              <span className="text-sm text-muted-foreground">
+                R$ {(game.price / 100).toFixed(2)}
+              </span>{" "}
             </p>
           </div>
           <Separator className="my-1" />
           <div className="flex flex-col space-y-1.5">
-            <p className="text-sm font-medium leading-none">Vagas:</p>
-            <p className="text-sm text-muted-foreground">
-              {game.vacancies ? game.vacancies : "Ilimitadas"}
+            <p className="text-sm font-medium leading-none">
+              Vagas totais:{" "}
+              <span className="text-muted-foreground">{game.vacancies}</span>
             </p>
           </div>
           <Separator className="my-1" />
           <div className="flex flex-col space-y-1.5">
-            <p className="text-sm font-medium leading-none">Tamanho do time:</p>
-            <p className="text-sm text-muted-foreground">{game.teamSize}</p>
+            <p className="text-sm font-medium leading-none">
+              Tamanho do time:{" "}
+              <span className="text-sm text-muted-foreground">
+                {game.teamSize}
+              </span>
+            </p>
           </div>
         </div>
 

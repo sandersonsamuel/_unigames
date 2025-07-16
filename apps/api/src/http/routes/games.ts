@@ -13,17 +13,21 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
           id: z.string(),
           name: z.string(),
           image: z.string(),
+          price: z.number(),
+          vacancies: z.number().nullable(),
+          competition: z.boolean().nullable(),
+          teamSize: z.number(),
+          description: z.string(),
         }))
       },
       tags: ["Games"],
       summary: "List all games",
     }
-  }, () => {
-    return db.select({
-      id: schema.games.id,
-      name: schema.games.name,
-      image: schema.games.image,
-    }).from(schema.games).orderBy(desc(schema.games.id))
+  }, async (_, reply) => {
+
+    const games = await db.select().from(schema.games).orderBy(desc(schema.games.id))
+
+    reply.status(200).send(games)
   })
 
   app.get("/:id", {

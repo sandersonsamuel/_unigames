@@ -57,8 +57,11 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
         });
 
       const preference = new Preference(mpClient);
+      const now = new Date()
+
       const createdPreference = await preference.create({
         body: {
+          date_of_expiration: new Date(now.getTime() + (60 * 60 * 1000)).toISOString(),
           external_reference: purchase[0].id,
           metadata: {
             competitors: competitors,

@@ -1,4 +1,4 @@
-import { Gamepad, Icon, LayoutDashboard, Ticket } from "lucide-react";
+import { Gamepad, LayoutDashboard, Ticket } from "lucide-react";
 
 import { getUser } from "@/app/actions/user";
 import {
@@ -12,7 +12,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { SignOutSidebarMenuItem } from "./sign-out-sidebar-menu-item";
-import { title } from "process";
 
 const items = [
   {

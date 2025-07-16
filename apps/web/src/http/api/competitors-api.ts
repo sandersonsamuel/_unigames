@@ -6,3 +6,12 @@ export const getCompetitorsByPurchase = async (
 ): Promise<CompetitorsResponseType[]> => {
   return fetcher<CompetitorsResponseType[]>(`/competitors/${purchaseId}`)
 }
+
+export const setTicketRemeeded = async (
+  competitorId: string,
+): Promise<void> => {
+  await fetcher<void>(`/competitors/${competitorId}`, {
+    method: 'PATCH',
+    headers: {}
+  })
+}

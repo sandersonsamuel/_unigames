@@ -50,4 +50,37 @@ export const competitorsRoutes: FastifyPluginAsyncZod = async (app) => {
 
     return reply.status(200).send(competitors)
   })
+
+  app.patch("/:competitorId", {
+    schema: {
+      params: z.object({
+        competitorId: z.string()
+      }),
+      tags: ["Competitors"],
+      summary: "Set ticketRemeeded",
+      response: {
+        204: z.null(),
+        403: z.object({
+          message: z.string()
+        })
+      }
+    }
+  }, async (request, reply) => {
+
+    const { competitorId } = request.params
+
+    const competitor = await db.select({
+      ticketRedeemed: schema.competitors.ticketRedeemed
+    }).from(schema.competitors).where(eq(schema.competitors.id, competitorId))
+
+    if (competitor[0].ticketRedeemed === true) {
+      reply.status(403).send({ message: "Ticket ja resgatado!" })
+    }
+
+    await db.update(schema.competitors).set({
+      ticketRedeemed: true
+    }).where(eq(schema.competitors.id, competitorId))
+
+    reply.status(204).send()
+  })
 }
