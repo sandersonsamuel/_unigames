@@ -8,6 +8,7 @@ import { gameRoutes } from './http/routes/games'
 import { purchaseRoutes } from './http/routes/purchases'
 import { mercadoPagoRoutes } from './http/routes/mercadopago'
 import { competitorsRoutes } from './http/routes/competitors'
+import { dashboardRoutes } from './http/routes/dashboard'
 
 const app = Fastify()
 
@@ -51,10 +52,14 @@ app.register(competitorsRoutes, {
   prefix: "competitors"
 })
 
+app.register(dashboardRoutes, {
+  prefix: "dashboard"
+})
+
 app.get('/health', (_, reply) => {
   reply.send('Ok!')
 })
 
-app.listen({ port: env.PORT }, (_, url) => {
+app.listen({ port: env.PORT, host: "0.0.0.0" }, (_, url) => {
   console.log(`Server running in ${url}`)
 })

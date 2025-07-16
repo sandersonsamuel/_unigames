@@ -10,13 +10,17 @@ import { Button } from "./ui/button";
 export default function CustomQrCodeScanner() {
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const [isScanning, setIsScanning] = useState(false);
+  const isActuallyRunningRef = useRef(false);
 
   const { mutateAsync } = useSetTicketRemeeded();
 
   useEffect(() => {
     scannerRef.current = new Html5Qrcode("reader");
     return () => {
-      scannerRef.current?.stop().catch(console.error);
+      if (isActuallyRunningRef.current) {
+        scannerRef.current?.stop().catch(() => {});
+        isActuallyRunningRef.current = false;
+      }
     };
   }, []);
 
@@ -40,6 +44,7 @@ export default function CustomQrCodeScanner() {
         }
       );
       setIsScanning(true);
+      isActuallyRunningRef.current = true;
     } catch (err) {
       console.error("Failed to start scanning:", err);
     }
@@ -47,13 +52,14 @@ export default function CustomQrCodeScanner() {
 
   const stopScan = async () => {
     if (!scannerRef.current) return;
-
+    if (!isActuallyRunningRef.current) return;
     try {
       await scannerRef.current.stop();
       scannerRef.current.clear();
       setIsScanning(false);
+      isActuallyRunningRef.current = false;
     } catch (err) {
-      console.error("Failed to stop scanning:", err);
+      // Silencia o erro para evitar flood no console
     }
   };
 
@@ -61,24 +67,32 @@ export default function CustomQrCodeScanner() {
     <div className="flex flex-col items-center gap-4 w-full">
       <div
         id="reader"
-        className="w-[300px] h-auto border-4 flex items-center justify-center mt-12"
+        className="w-full max-w-xs h-auto flex items-center justify-center rounded-lg"
       />
 
       {!isScanning && (
-        <div className="flex h-[300px] items-center justify-center">
-          <ScanLine size={250} />
+        <div className="flex h-[250px] items-center justify-center">
+          <ScanLine size={200} />
         </div>
       )}
 
       {!isScanning ? (
-        <Button onClick={startScan} className="px-4 py-2 w-[300px]">
-          Iniciar scan
+        <Button onClick={startScan} className="px-4 py-2 w-full max-w-xs">
+          Iniciar leitura
         </Button>
       ) : (
-        <Button onClick={stopScan} className="px-4 py-2 w-[300px]">
-          Parar de escanear
+        <Button
+          onClick={stopScan}
+          className="px-4 py-2 w-full max-w-xs"
+          variant="secondary"
+        >
+          Parar leitura
         </Button>
       )}
+      <span className="text-sm text-muted-foreground text-center">
+        Certifique-se de que o QR Code esteja visível e bem iluminado para uma
+        leitura rápida.
+      </span>
     </div>
   );
 }
