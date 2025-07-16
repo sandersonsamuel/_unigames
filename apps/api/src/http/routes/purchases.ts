@@ -6,7 +6,7 @@ import { db } from "../../db/connection";
 import { schema } from "../../db/schemas/index";
 import { paymentMethod, paymentStatus } from "../../db/schemas/purchases";
 import { env } from "../../env";
-import { competitorsSchema } from "../../schemas/competitors";
+import { competitorsSchema } from "../schemas/competitors";
 
 const mpClient = new MercadoPagoConfig({
   accessToken: env.MP_ACCESS_TOKEN,
@@ -186,7 +186,7 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
               paymentMethod: z.enum(paymentMethod.enumValues).nullable(),
               paymentStatus: z.enum(paymentStatus.enumValues),
               mpPaymentId: z.string().nullable(),
-              paidAt: z.string().nullable(),
+              paidAt: z.date().nullable(),
             })
           ),
         },

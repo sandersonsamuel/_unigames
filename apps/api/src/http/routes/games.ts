@@ -3,7 +3,7 @@ import type { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import z from "zod/v4";
 import { db } from "../../db/connection";
 import { schema } from "../../db/schemas/index";
-import { gameSchema } from "../../schemas/game";
+import { gameSchema } from "../schemas/game";
 
 export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
   app.get("/", {

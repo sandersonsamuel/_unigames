@@ -6,7 +6,7 @@ import { db } from "../../db/connection";
 import { schema } from "../../db/schemas/index";
 import { env } from "../../env";
 import { verifyMercadoPagoSignature } from "../../http/security/mercadopago-signature";
-import { competitorsType } from "../../schemas/competitors";
+import { competitorsType } from "../schemas/competitors";
 
 const client = new MercadoPagoConfig({
   accessToken: env.MP_ACCESS_TOKEN,
@@ -90,7 +90,7 @@ export const mercadoPagoRoutes: FastifyPluginAsyncZod = async (app) => {
                 .set({
                   paymentStatus: "PAID",
                   paymentMethod: paymentMethod,
-                  paidAt: new Date(paymentData.date_approved).toISOString(),
+                  paidAt: new Date(paymentData.date_approved)
                 })
                 .where(eq(schema.purchases.id, purchase.id));
 
@@ -107,7 +107,7 @@ export const mercadoPagoRoutes: FastifyPluginAsyncZod = async (app) => {
                 .update(schema.purchases)
                 .set({
                   paymentStatus: "CANCELLED",
-                  deletedAt: new Date().toString(),
+                  deletedAt: new Date(),
                 })
                 .where(eq(schema.purchases.id, purchase.id));
             }

@@ -45,7 +45,7 @@ export function PurchaseCard({ purchase }: PurchaseCardProps) {
                   currency: "BRL",
                 })}
               </p>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-xs lg:text-sm text-muted-foreground line-clamp-1">
                 {purchase.paymentStatus === "PENDING"
                   ? "Aguardando pagamento"
                   : "Clique para ver detalhes"}

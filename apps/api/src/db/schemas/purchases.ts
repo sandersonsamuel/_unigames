@@ -1,4 +1,4 @@
-import { date, pgEnum, pgTable, uuid, varchar } from "drizzle-orm/pg-core"
+import { pgEnum, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 import { games } from "./games"
 
 export const paymentStatus = pgEnum("payment_status", ['PENDING', 'PAID', 'CANCELLED'])
@@ -11,6 +11,6 @@ export const purchases = pgTable("purchases", {
   paymentMethod: paymentMethod('payment_method'),
   paymentStatus: paymentStatus('payment_status').notNull().default('PENDING'),
   mpPaymentId: varchar(),
-  paidAt: date(),
-  deletedAt: date(),
+  paidAt: timestamp("paid_at", { withTimezone: true }),
+  deletedAt: timestamp("deleted_at", { withTimezone: true }),
 })

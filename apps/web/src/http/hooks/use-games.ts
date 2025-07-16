@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { createGame, deleteGame, getGameById, getGames, updateGame } from '../api/games-api'
 import { CreateGameType } from '@/types/games'
+import { revalidateTagAction } from '@/app/actions/revalidate'
 
 const GAMES_QUERY_KEY = ['games']
 
@@ -25,6 +26,7 @@ export const useCreateGameMutation = () => {
     mutationFn: createGame,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: GAMES_QUERY_KEY })
+      revalidateTagAction("get-games")
     },
   })
 }

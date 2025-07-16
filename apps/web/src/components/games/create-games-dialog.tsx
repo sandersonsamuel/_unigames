@@ -38,14 +38,18 @@ export const CreateGamesDialog = () => {
       price: 0,
       vacancies: 0,
       teamSize: 1,
-      competition: false,
+      competition: true,
     },
   });
 
   const handleCreateGame = async (data: CreateGameType) => {
     try {
-      await createGame(data);
-      toast.success("Jogo criado com sucesso!");
+      toast.promise(createGame(data), {
+        success: "Jogo criado com sucesso!",
+        loading: "Criando jogo...",
+        error: (err) => err.message,
+      });
+      form.reset();
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

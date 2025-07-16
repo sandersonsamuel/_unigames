@@ -22,6 +22,13 @@
       "when": 1752595311755,
       "tag": "0002_eager_tattoo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1752637502723,
+      "tag": "0003_bored_zzzax",
+      "breakpoints": true
     }
   ]
 }

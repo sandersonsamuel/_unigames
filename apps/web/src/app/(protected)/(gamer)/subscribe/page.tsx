@@ -21,27 +21,31 @@ export default async function Subscribe() {
   const games = getGames();
 
   return (
-    <div className="flex flex-col items-center p-5 gap-3">
+    <div className="flex flex-col items-center p-4 gap-3 w-full  mx-auto">
       {logoUnigames && (
         <Link href={"/"}>
           <Image
             src={logoUnigames.src}
-            width={400}
-            height={47}
+            width={220}
+            height={32}
             alt={logoUnigames.alt}
+            className="w-[220px] h-auto md:w-[400px]"
+            priority
           />
         </Link>
       )}
-      <h3 className="text-xl text-center">
+      <h3 className="text-lg text-center md:text-xl">
         Torneio de jogos eletrônicos Unifacema
       </h3>
 
-      <Card className="w-10/12 bg-transparent border-none">
+      <Card className="w-full bg-transparent border-none">
         <CardHeader>
-          <CardTitle className="text-2xl">Meus Ingressos</CardTitle>
-          <CardDescription>Ingressos adiquiridos</CardDescription>
+          <CardTitle className="text-lg md:text-2xl">Meus Ingressos</CardTitle>
+          <CardDescription className="text-sm md:text-base">
+            Ingressos adquiridos
+          </CardDescription>
           <CardAction>
-            <Suspense fallback={<Button>Nova incrição</Button>}>
+            <Suspense fallback={<Button>Nova inscrição</Button>}>
               <NewSubscriptionDialog gamesPromise={games} />
             </Suspense>
           </CardAction>
