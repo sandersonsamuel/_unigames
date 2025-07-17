@@ -5,7 +5,7 @@ import { eq, and, isNull } from "drizzle-orm";
 import z from "zod/v4";
 
 export const dashboardRoutes: FastifyPluginAsyncZod = async (app) => {
-  app.get('/overview/purchase', {
+  app.get('/overview', {
     schema: {
       summary: "Get Dashboard Overview",
       description: "Fetches an overview of the dashboard including total purchases, payment methods data, and total amount.",

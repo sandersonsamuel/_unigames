@@ -1,4 +1,5 @@
 import { env } from '@/env'
+import { createClient } from '@/services/supabase/server'
 
 class HttpError extends Error {
   response: Response
@@ -16,11 +17,18 @@ class HttpError extends Error {
 export async function fetcher<T>(
   url: string,
   options?: RequestInit,
+  appJson: boolean = true
 ): Promise<T> {
+
+  const supabase = await createClient()
+  const { data: { session } } = await supabase.auth.getSession()
+  const jwt = session?.access_token
+
   const response = await fetch(env.NEXT_PUBLIC_API_URL + url, {
     headers: {
-      'Content-Type': 'application/json',
+      ...(appJson ? { 'Content-Type': 'application/json' } : {}),
       ...options?.headers,
+      'Authorization': `Bearer ${jwt}`
     },
     ...options,
   })

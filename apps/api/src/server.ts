@@ -1,14 +1,16 @@
-import Fastify from 'fastify'
+import fastifyCors from '@fastify/cors'
 import fastifySwagger from "@fastify/swagger"
 import fastifySwaggerUi from "@fastify/swagger-ui"
+import Fastify from 'fastify'
 import { jsonSchemaTransform, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
-import fastifyCors from '@fastify/cors'
 import { env } from './env'
-import { gameRoutes } from './http/routes/games'
-import { purchaseRoutes } from './http/routes/purchases'
-import { mercadoPagoRoutes } from './http/routes/mercadopago'
 import { competitorsRoutes } from './http/routes/competitors'
 import { dashboardRoutes } from './http/routes/dashboard'
+import { gameRoutes } from './http/routes/games'
+import { mercadoPagoRoutes } from './http/routes/mercadopago'
+import { purchaseRoutes } from './http/routes/purchases'
+import { fastifyJwt } from '@fastify/jwt'
+import { authMiddleware } from './http/middlewares/auth'
 
 const app = Fastify()
 
@@ -19,6 +21,12 @@ app.register(fastifyCors, {
 
 app.setValidatorCompiler(validatorCompiler)
 app.setSerializerCompiler(serializerCompiler)
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET
+})
+
+app.addHook('onRequest', authMiddleware)
 
 app.register(fastifySwagger, {
   openapi: {
