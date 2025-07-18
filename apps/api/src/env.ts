@@ -10,3 +10,5 @@ export const env = z
 		JWT_SECRET: z.string()
 	})
 	.parse(process.env);
+
+	

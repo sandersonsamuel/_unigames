@@ -8,4 +8,4 @@ export const gameSchema = z.object({
   vacancies: z.number().int().positive().optional(),
   competition: z.boolean().optional(),
   teamSize: z.number().int().positive(),
-})
+});
