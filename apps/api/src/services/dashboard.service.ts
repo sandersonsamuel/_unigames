@@ -1,8 +1,10 @@
 import { db } from '../db/connection';
 import { schema } from '../db/schemas';
-import { eq, and, isNull } from 'drizzle-orm';
+import { eq, and, isNull, isNotNull } from 'drizzle-orm';
+import xlsx from 'xlsx';
 
 export async function getDashboardOverview() {
+
   const purchases = await db.select({
     id: schema.purchases.id,
     game: { price: schema.games.price },
@@ -18,8 +20,11 @@ export async function getDashboardOverview() {
 
   const ammount = purchases.reduce((acc, purchase) => acc + (purchase.game?.price || 0), 0);
 
-  const totalCompetitors = await db.select({ id: schema.competitors.id, name: schema.competitors.name }).from(schema.competitors);
-  const games = await db.select({ id: schema.games.id }).from(schema.games).where(eq(schema.games.competition, true));
+  const totalCompetitors = await db.select({ id: schema.competitors.id, name: schema.competitors.name })
+    .from(schema.competitors);
+
+  const games = await db.select({ id: schema.games.id }).from(schema.games)
+    .where(eq(schema.games.competition, true));
 
   return {
     totalPuchases: purchases.length,
@@ -28,4 +33,30 @@ export async function getDashboardOverview() {
     totalCompetitors: totalCompetitors.length,
     totalGames: games.length
   };
+}
+
+export const getStudentsSheet = async (isPresent?: boolean) => {
+  // const conditions = [isNotNull(schema.competitors.registration)]
+
+  // if (typeof isPresent === 'boolean') {
+  //   conditions.push(eq(schema.competitors.ticketRedeemed, isPresent))
+  // }
+
+  const students = await db.select({
+    nome: schema.competitors.name,
+    matricula: schema.competitors.registration,
+    presente: schema.competitors.ticketRedeemed,
+  })
+    .from(schema.competitors)
+    // .where(and(...conditions))
+
+  const sheet = xlsx.utils.json_to_sheet(students)
+  const workbook = xlsx.utils.book_new();
+
+  xlsx.utils.book_append_sheet(workbook, sheet, "Alunos");
+  xlsx.writeFile(workbook, "alunos.xlsx");
+
+  const buffer = xlsx.write(workbook, { type: "buffer", bookType: "xlsx" });
+
+  return buffer
 }

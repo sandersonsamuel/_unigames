@@ -29,6 +29,7 @@
     "mercadopago": "^2.8.0",
     "pg": "^8.16.3",
     "postgres": "^3.4.7",
+    "xlsx": "^0.18.5",
     "zod": "^4.0.5"
   },
   "devDependencies": {

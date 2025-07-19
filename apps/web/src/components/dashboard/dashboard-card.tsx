@@ -1,4 +1,4 @@
-import { LucideGamepad } from "lucide-react";
+import { ReactNode } from "react";
 import {
   Card,
   CardAction,
@@ -6,7 +6,6 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
-import { ReactNode } from "react";
 
 type Props = {
   children: ReactNode;

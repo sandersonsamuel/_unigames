@@ -23,6 +23,15 @@ export async function getCompetitorsByPurchaseId(purchaseId: string) {
   return competitors;
 }
 
+export async function getAllCompetitors() {
+  return await db.select({
+    id: schema.competitors.id,
+    name: schema.competitors.name,
+    registration: schema.competitors.registration,
+    ticketRedeemed: schema.competitors.ticketRedeemed
+  }).from(schema.competitors)
+}
+
 export async function setTicketRedeemed(competitorId: string) {
   const competitor = await db.select({
     ticketRedeemed: schema.competitors.ticketRedeemed

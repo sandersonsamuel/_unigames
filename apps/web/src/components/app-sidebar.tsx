@@ -8,9 +8,8 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { AppSidebarClientMenuItem } from "./app-sidebar-client-menu-item";
 import { SignOutSidebarMenuItem } from "./sign-out-sidebar-menu-item";
 
 const items = [
@@ -44,14 +43,10 @@ export async function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <AppSidebarClientMenuItem key={item.title} href={item.url}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </AppSidebarClientMenuItem>
               ))}
               <SignOutSidebarMenuItem />
             </SidebarMenu>

@@ -4,6 +4,7 @@ import { purchaseRoutes } from './purchases.routes';
 import { mercadoPagoRoutes } from './mercadopago.routes';
 import { competitorsRoutes } from './competitors.routes';
 import { dashboardRoutes } from './dashboard.routes';
+import z from 'zod/v4';
 
 export default fp(async (app) => {
   app.register(gameRoutes, {
@@ -26,7 +27,16 @@ export default fp(async (app) => {
     prefix: "dashboard"
   })
 
-  app.get('/health', (_, reply) => {
+  app.get('/health', {
+    schema: {
+      response: {
+        200: z.string().default("ok")
+      },
+      tags: ["App"],
+      summary: "Health check",
+      description: "Checks if the API is running and returns a simple 'Ok!' message."
+    }
+  }, (_, reply) => {
     reply.send('Ok!')
   })
 })

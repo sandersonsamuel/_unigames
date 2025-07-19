@@ -17,7 +17,7 @@ class HttpError extends Error {
 export async function fetcher<T>(
   url: string,
   options?: RequestInit,
-  appJson: boolean = true
+  appJson: {} = { 'Content-Type': 'application/json' },
 ): Promise<T> {
 
   const supabase = await createClient()
@@ -26,7 +26,7 @@ export async function fetcher<T>(
 
   const response = await fetch(env.NEXT_PUBLIC_API_URL + url, {
     headers: {
-      ...(appJson ? { 'Content-Type': 'application/json' } : {}),
+      ...appJson,
       ...options?.headers,
       'Authorization': `Bearer ${jwt}`
     },
@@ -39,9 +39,15 @@ export async function fetcher<T>(
   }
 
   const contentType = response.headers.get('content-type')
-  if (!contentType || !contentType.includes('application/json')) {
-    return null as T
+
+  if (contentType?.includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+    console.log(response, "caiu no bloob")
+    return response.blob() as Promise<T>
   }
 
-  return response.json()
+  if (contentType?.includes('application/json')) {
+    return response.json()
+  }
+
+  return null as T
 }

@@ -3,7 +3,6 @@ import fastifyJwt from '@fastify/jwt'
 import Fastify from 'fastify'
 import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod'
 import { env } from './env'
-import { authMiddleware } from './middlewares/auth.middleware'
 import swaggerPlugin from './plugins/swagger.plugin'
 import routes from './routes'
 
@@ -21,7 +20,7 @@ app.register(fastifyJwt, {
   secret: env.JWT_SECRET
 })
 
-app.addHook('onRequest', authMiddleware)
+// app.addHook('onRequest', authMiddleware)
 
 app.register(swaggerPlugin)
 

@@ -1,9 +1,8 @@
 import { OverViewTab } from "@/components/dashboard/overview-tab";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getDashboardOverview } from "@/http/api/dashboard-api";
+import { TicketsTab } from "@/components/dashboard/tickets-tab";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function Dashboard() {
-  const overviewData = await getDashboardOverview();
 
   return (
     <div className="px-5 p-3 space-y-5 w-full">
@@ -15,12 +14,12 @@ export default async function Dashboard() {
       <Tabs defaultValue="overview">
         <TabsList>
           <TabsTrigger value="overview">Visão geral</TabsTrigger>
-          <TabsTrigger value="password">Jogos</TabsTrigger>
+          <TabsTrigger value="games">Jogos</TabsTrigger>
+          <TabsTrigger value="tickets">Participantes</TabsTrigger>
         </TabsList>
-        
-        <OverViewTab data={overviewData} />
 
-        <TabsContent value="password">Change your password here.</TabsContent>
+        <OverViewTab />
+        <TicketsTab />
       </Tabs>
     </div>
   );

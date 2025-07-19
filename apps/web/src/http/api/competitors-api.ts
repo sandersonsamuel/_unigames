@@ -12,5 +12,5 @@ export const setTicketRemeeded = async (
 ): Promise<void> => {
   await fetcher<void>(`/competitors/${competitorId}`, {
     method: 'PATCH',
-  }, false)
+  })
 }

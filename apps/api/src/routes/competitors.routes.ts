@@ -3,6 +3,7 @@ import z from "zod/v4";
 import { getCompetitorsByPurchaseId, setTicketRedeemed } from '../services/competitors.service';
 
 export const competitorsRoutes: FastifyPluginAsyncZod = async (app) => {
+
   app.get('/:purchaseId', {
     schema: {
       params: z.object({ purchaseId: z.string() }),

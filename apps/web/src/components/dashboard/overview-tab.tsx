@@ -1,14 +1,12 @@
-import { DashboardOverviewType } from "@/schemas/dashboard";
+import { getDashboardOverview } from "@/http/api/dashboard-api";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { BanknoteArrowUp, LucideGamepad, TicketPlus } from "lucide-react";
 import { DashboardCard } from "./dashboard-card";
 import { PaymentMethodPieChart } from "./payment-method-pie-chart";
 
-type Props = {
-  data: DashboardOverviewType;
-};
+export const OverViewTab = async () => {
+  const data = await getDashboardOverview();
 
-export const OverViewTab = ({ data }: Props) => {
   return (
     <TabsContent value="overview" className="flex flex-col gap-3">
       <div className="flex gap-3 flex-wrap">
