@@ -37,6 +37,7 @@ export const useUpdateGameMutation = () => {
     mutationFn: ({ gameId, game }: { gameId: string; game: CreateGameType }) =>
       updateGame(gameId, game),
     onSuccess: (_, { gameId }) => {
+      revalidateTagAction("get-games")
       queryClient.invalidateQueries({ queryKey: GAMES_QUERY_KEY })
       queryClient.invalidateQueries({ queryKey: [...GAMES_QUERY_KEY, gameId] })
     },

@@ -8,6 +8,11 @@ export const getUser = async () => {
   return (await supabase.auth.getUser()).data.user;
 };
 
+export const getSession = async () => {
+  const supabase = await createClient()
+  return (await supabase.auth.getSession()).data.session
+}
+
 export const redirectByRole = async () => {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getUser();

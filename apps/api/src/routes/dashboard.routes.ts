@@ -1,8 +1,8 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import z from "zod/v4";
-import { dashboardOverviewSchema } from '../schemas/dashboard.schema';
-import { getDashboardOverview, getStudentsSheet } from '../services/dashboard.service';
+import { dashboardGetGamesStatsSchema, dashboardOverviewSchema, dashboardTicketsSchema } from '../schemas/dashboard.schema';
 import { getAllCompetitors } from "../services/competitors.service";
+import { getDashboardOverview, getGamesStats, getStudentsSheet } from '../services/dashboard.service';
 
 export const dashboardRoutes: FastifyPluginAsyncZod = async (app) => {
   app.get('/overview', {
@@ -20,17 +20,7 @@ export const dashboardRoutes: FastifyPluginAsyncZod = async (app) => {
   app.get("/tickets", {
     schema: {
       response: {
-        200: z.object({
-          competitors: z.array(z.object({
-            id: z.string(),
-            name: z.string(),
-            registration: z.string().nullable(),
-            ticketRedeemed: z.boolean().nullable()
-          })),
-          competitorsPresent: z.number(),
-          competitorsAbsent: z.number(),
-          competitorsStudents: z.number()
-        })
+        200: dashboardTicketsSchema
       },
       tags: ["Dashboard"],
       summary: "Get competitors"
@@ -47,6 +37,19 @@ export const dashboardRoutes: FastifyPluginAsyncZod = async (app) => {
       competitorsAbsent,
       competitorsStudents
     });
+  })
+
+  app.get("/games", {
+    schema: {
+      tags: ["Dashboard"],
+      summary: "Get game stats",
+      response: {
+        200: z.array(dashboardGetGamesStatsSchema)
+      }
+    }
+  }, async (_, reply) => {
+    const games = await getGamesStats()
+    reply.status(200).send(games)
   })
 
   app.get('/competitors/sheet', {

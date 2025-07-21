@@ -5,6 +5,7 @@ import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod
 import { env } from './env'
 import swaggerPlugin from './plugins/swagger.plugin'
 import routes from './routes'
+import { authMiddleware } from './middlewares/auth.middleware'
 
 const app = Fastify()
 

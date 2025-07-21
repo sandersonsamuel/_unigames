@@ -1,9 +1,9 @@
+import { GamesTab } from "@/components/dashboard/games-tab";
 import { OverViewTab } from "@/components/dashboard/overview-tab";
 import { TicketsTab } from "@/components/dashboard/tickets-tab";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default async function Dashboard() {
-
   return (
     <div className="px-5 p-3 space-y-5 w-full">
       <div>
@@ -20,6 +20,7 @@ export default async function Dashboard() {
 
         <OverViewTab />
         <TicketsTab />
+        <GamesTab />
       </Tabs>
     </div>
   );

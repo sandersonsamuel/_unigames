@@ -1,7 +1,7 @@
+import { and, count, eq, isNull } from 'drizzle-orm';
+import xlsx from 'xlsx';
 import { db } from '../db/connection';
 import { schema } from '../db/schemas';
-import { eq, and, isNull, isNotNull } from 'drizzle-orm';
-import xlsx from 'xlsx';
 
 export async function getDashboardOverview() {
 
@@ -35,6 +35,35 @@ export async function getDashboardOverview() {
   };
 }
 
+export const getGamesStats = async () => {
+  let games = await db.select({
+    id: schema.games.id,
+    name: schema.games.name,
+    price: schema.games.price,
+    teamSize: schema.games.teamSize,
+    teams: count(schema.purchases.id).as('teams'),
+    competition: schema.games.competition,
+    vacancies: schema.games.vacancies,
+    image: schema.games.image,
+    description: schema.games.description
+  }).from(schema.games)
+    .leftJoin(schema.purchases,
+      and(
+        eq(schema.purchases.gameId, schema.games.id),
+        eq(schema.purchases.paymentStatus, "PAID"),
+        isNull(schema.purchases.deletedAt)))
+    .groupBy(schema.games.id)
+
+  return games.map((game) => ({
+    ...game,
+    competitorsCount: game.teams * game.teamSize,
+    revenue: game.teams * game.price,
+    status: !game.competition ? "UNLIMITED" :
+      game.competition &&
+        (game.teams < (game.vacancies || 0)) ? "AVAILABLE" : "SOLD_OUT" as "UNLIMITED" | "AVAILABLE" | "SOLD_OUT"
+  }))
+}
+
 export const getStudentsSheet = async (isPresent?: boolean) => {
   // const conditions = [isNotNull(schema.competitors.registration)]
 
@@ -48,7 +77,7 @@ export const getStudentsSheet = async (isPresent?: boolean) => {
     presente: schema.competitors.ticketRedeemed,
   })
     .from(schema.competitors)
-    // .where(and(...conditions))
+  // .where(and(...conditions))
 
   const sheet = xlsx.utils.json_to_sheet(students)
   const workbook = xlsx.utils.book_new();

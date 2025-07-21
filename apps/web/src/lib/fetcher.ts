@@ -1,3 +1,4 @@
+import { getSession } from '@/app/actions/user'
 import { env } from '@/env'
 import { createClient } from '@/services/supabase/server'
 
@@ -20,8 +21,7 @@ export async function fetcher<T>(
   appJson: {} = { 'Content-Type': 'application/json' },
 ): Promise<T> {
 
-  const supabase = await createClient()
-  const { data: { session } } = await supabase.auth.getSession()
+  const session = await getSession()
   const jwt = session?.access_token
 
   const response = await fetch(env.NEXT_PUBLIC_API_URL + url, {
@@ -41,7 +41,6 @@ export async function fetcher<T>(
   const contentType = response.headers.get('content-type')
 
   if (contentType?.includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
-    console.log(response, "caiu no bloob")
     return response.blob() as Promise<T>
   }
 
