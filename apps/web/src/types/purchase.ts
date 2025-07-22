@@ -1,4 +1,4 @@
-import { GameType } from "./games";
+import { GameInPurchaseType, GameType } from "./games";
 import { PaymentMethod } from "./payment-method";
 import { PaymentStatus } from "./payment-status";
 
@@ -24,7 +24,7 @@ export type PurchaseType = {
   id: string
   userId: string
   gameId: string
-  game: GameType
+  game: GameInPurchaseType
   paymentMethod: PaymentMethod
   paymentStatus: PaymentStatus
   mpPaymentId: string

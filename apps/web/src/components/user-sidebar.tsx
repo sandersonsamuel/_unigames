@@ -1,4 +1,4 @@
-import { Home } from "lucide-react";
+import { Home, HomeIcon, Ticket } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -10,13 +10,19 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { SignOutSidebarMenuItem } from "./sign-out-sidebar-menu-item";
+import { UserSidebarClientMenuItem } from "./user-sidebar-client-menu-item";
 import { getUser } from "@/app/actions/user";
 
 const items = [
   {
+    title: "Página inicial",
+    url: "/",
+    icon: HomeIcon,
+  },
+  {
     title: "Assinatura",
     url: "/subscribe",
-    icon: Home,
+    icon: Ticket,
   },
 ];
 
@@ -33,14 +39,10 @@ export async function UserSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
+                <UserSidebarClientMenuItem key={item.title} href={item.url}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </UserSidebarClientMenuItem>
               ))}
               <SignOutSidebarMenuItem />
             </SidebarMenu>

@@ -20,5 +20,11 @@ export async function getPurchasesByUserId(userId: string) {
     paymentStatus: schema.purchases.paymentStatus,
     mpPaymentId: schema.purchases.mpPaymentId,
     paidAt: schema.purchases.paidAt,
-  }).from(schema.purchases).where(and(eq(schema.purchases.userId, userId), isNull(schema.purchases.deletedAt)));
+    game: {
+      id: schema.games.id,
+      name: schema.games.name,
+      image: schema.games.image,
+      price: schema.games.price
+    }
+  }).from(schema.purchases).leftJoin(schema.games, eq(schema.games.id, schema.purchases.gameId)).where(and(eq(schema.purchases.userId, userId), isNull(schema.purchases.deletedAt)))
 }

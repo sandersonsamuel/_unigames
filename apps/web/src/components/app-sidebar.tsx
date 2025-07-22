@@ -1,4 +1,4 @@
-import { Gamepad, LayoutDashboard, Ticket } from "lucide-react";
+import { Gamepad, HomeIcon, LayoutDashboard, Ticket } from "lucide-react";
 
 import { getUser } from "@/app/actions/user";
 import {
@@ -13,6 +13,11 @@ import { AppSidebarClientMenuItem } from "./app-sidebar-client-menu-item";
 import { SignOutSidebarMenuItem } from "./sign-out-sidebar-menu-item";
 
 const items = [
+  {
+    title: "Página inicial",
+    url: "/",
+    icon: HomeIcon,
+  },
   {
     title: "Dashboard",
     url: "/dashboard",

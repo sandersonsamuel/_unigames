@@ -70,7 +70,7 @@ export const SecondStepSubscription = () => {
         ))}
 
       <p className="text-sm text-muted-foreground">
-        Se não tiver matrícula, deixe em branco.
+        Caso não seja estudante, deixe em branco.
       </p>
 
       <Button type="button" onClick={onNext}>

@@ -3,7 +3,16 @@ import { schema } from '../db/schemas';
 import { desc, eq, sql, and, isNull } from 'drizzle-orm';
 
 export async function listGames() {
-  return await db.select().from(schema.games).orderBy(desc(schema.games.id));
+  return await db.select({
+    id: schema.games.id,
+    name: schema.games.name,
+    description: schema.games.description,
+    image: schema.games.image,
+    price: schema.games.price,
+    vacancies: schema.games.vacancies,
+    competition: schema.games.competition,
+    teamSize: schema.games.teamSize,
+  }).from(schema.games).orderBy(desc(schema.games.id));
 }
 
 export async function getGameById(id: string) {

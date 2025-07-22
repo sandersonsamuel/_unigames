@@ -27,7 +27,7 @@ export const GamesTab = async () => {
                   <img
                     src={game.image || "/placeholder.svg"}
                     alt={`${game.name} logo`}
-                    className="size-[70px] object-cover"
+                    className="size-[80px] border-4"
                   />
                   <div className="flex flex-col gap-1">
                     <CardTitle className="text-lg line-clamp-1">

@@ -23,7 +23,7 @@ export default function CallbackPage() {
     }
 
     redirect(
-      data.user?.user_metadata.role == Role.ADMIN ? "/dashboard" : "subscribe"
+      data.user?.user_metadata.role == Role.ADMIN ? "/dashboard" : "/subscribe"
     );
   };
 
