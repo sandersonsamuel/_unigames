@@ -13,4 +13,5 @@ export const purchases = pgTable("purchases", {
   mpPaymentId: varchar(),
   paidAt: timestamp("paid_at", { withTimezone: true }),
   deletedAt: timestamp("deleted_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 })

@@ -1,7 +1,7 @@
 import z from "zod/v4";
 import { paymentMethod, paymentStatus } from "../db/schemas/purchases";
 
-export const purchaseSchema = z.object({
+export const purchaseWithGameSchema = z.object({
   id: z.string(),
   paymentMethod: z.enum(paymentMethod.enumValues).nullable(),
   paymentStatus: z.enum(paymentStatus.enumValues),
@@ -15,6 +15,16 @@ export const purchaseSchema = z.object({
     price: z.number(),
     image: z.string()
   }).nullable()
+});
+
+export const purchaseSchema = z.object({
+  id: z.string(),
+  paymentMethod: z.enum(paymentMethod.enumValues).nullable(),
+  paymentStatus: z.enum(paymentStatus.enumValues),
+  userId: z.string(),
+  gameId: z.string(),
+  mpPaymentId: z.string().nullable(),
+  paidAt: z.date().nullable(),
 });
 
 export const subscribeSchema = z.object({

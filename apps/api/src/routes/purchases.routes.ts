@@ -1,26 +1,61 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import z from "zod/v4";
-import { purchaseSchema } from '../schemas/purchases.schema';
-import { createPurchase, getPurchasesByUserId } from '../services/purchases.service';
+import { competitorsSchema } from "../schemas/competitors.schema";
+import { purchaseWithGameSchema } from '../schemas/purchases.schema';
+import { createPurchase, getPurchasesByUserId, updatePurchase } from '../services/purchases.service';
+import { createPreference } from "../services/preference.service";
 
 export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
-  app.post('/', {
-    schema: {
-      body: purchaseSchema,
-      response: { 201: z.object({ id: z.string() }), 404: z.object({ message: z.string() }) },
-      tags: ["Purchases"],
-      summary: "Create a new purchase",
+  app.post(
+    "/subscribe",
+    {
+      schema: {
+        body: z.object({
+          gameId: z.uuid(),
+          userId: z.uuid(),
+          email: z.email(),
+          competitors: competitorsSchema,
+        }),
+        tags: ["Purchases"],
+        summary: "Create a new subscription (payment preference)",
+        response: {
+          201: z.object({
+            initPoint: z.url(),
+          }),
+          404: z.object({
+            message: z.string(),
+          }),
+        },
+      },
+    }, async (request, reply) => {
+
+      const { competitors, email, gameId, userId } = request.body;
+
+      const { game, purchaseId } = await createPurchase({
+        userId,
+        gameId,
+      });
+
+      const createdPreference = await createPreference(purchaseId, game, competitors, email);
+
+      if (!createdPreference.init_point || !createdPreference.id) {
+        throw new Error("Failed to create payment preference");
+      }
+
+      await updatePurchase(purchaseId, {
+        mpPaymentId: createdPreference.id
+      })
+
+      return reply.status(201).send({
+        initPoint: createdPreference.init_point,
+      });
     }
-  }, async (request, reply) => {
-    const purchase = await createPurchase(request.body);
-    if (!purchase) return reply.status(404).send({ message: "Game not found" });
-    reply.status(201).send(purchase);
-  });
+  )
 
   app.get('/:userId', {
     schema: {
       params: z.object({ userId: z.string() }),
-      response: { 200: z.array(purchaseSchema) },
+      response: { 200: z.array(purchaseWithGameSchema) },
       tags: ["Purchases"],
       summary: "Get purchases by userId",
     }

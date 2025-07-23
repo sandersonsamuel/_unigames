@@ -17,8 +17,8 @@ export const mercadoPagoRoutes: FastifyPluginAsyncZod = async (app) => {
     },
   }, async (request, reply) => {
     try {
-      const { type, data } = request.body;
-      const result = await handleMercadoPagoWebhook(type, data);
+      const { type, data, action } = request.body;
+      const result = await handleMercadoPagoWebhook(type, data, action);
       if (result.error) return reply.status(404).send({ message: result.error });
       return reply.status(200).send({ received: true });
     } catch (error) {

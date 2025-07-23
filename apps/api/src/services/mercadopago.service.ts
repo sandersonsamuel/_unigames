@@ -7,10 +7,10 @@ import { competitorsType } from '../schemas/competitors.schema';
 
 const client = new MercadoPagoConfig({ accessToken: env.MP_ACCESS_TOKEN });
 
-export async function handleMercadoPagoWebhook(type: string, data: { id: string }) {
+export async function handleMercadoPagoWebhook(type: string, data: { id: string }, action: string) {
 
   console.log(
-    `Received Mercado Pago webhook: type=${type}, data.id=${data.id}`
+    `Received Mercado Pago webhook: action=${action}, data.id=${data.id}`
   )
 
   if (type !== 'payment') return { received: true };
@@ -27,7 +27,7 @@ export async function handleMercadoPagoWebhook(type: string, data: { id: string 
 
   if (paymentData.status === 'approved' && paymentData.date_approved) {
 
-    console.log(`Payment approved: ${paymentData.id}, purchaseId: ${purchase.id}`);
+    console.log(`Payment approved: ${paymentData.id}, purchaseId: ${purchase.id}, action: ${action}`);
 
     const paymentMethod = paymentData.payment_type_id === 'credit_card' ? 'CARD' : 'PIX';
     const competitors = paymentData.metadata.competitors as competitorsType;
@@ -43,7 +43,7 @@ export async function handleMercadoPagoWebhook(type: string, data: { id: string 
   }
 
   if (paymentData.status === 'expired' || paymentData.status === 'cancelled') {
-    console.log(`Payment expired or cancelled ${paymentData.status}: ${paymentData.id}, purchaseId: ${purchase.id}`);
+    console.log(`Payment expired or cancelled, action:${action}, ${paymentData.status}: ${paymentData.id}, purchaseId: ${purchase.id}`);
     await db.update(schema.purchases).set({ paymentStatus: 'CANCELLED', deletedAt: new Date() }).where(eq(schema.purchases.id, purchase.id));
   }
 

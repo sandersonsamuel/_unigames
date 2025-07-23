@@ -10,7 +10,6 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { SignOutSidebarMenuItem } from "./sign-out-sidebar-menu-item";
-import { UserSidebarClientMenuItem } from "./user-sidebar-client-menu-item";
 import { getUser } from "@/app/actions/user";
 
 const items = [
@@ -39,10 +38,14 @@ export async function UserSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <UserSidebarClientMenuItem key={item.title} href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </UserSidebarClientMenuItem>
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton asChild>
+                    <a href={item.url}>
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </a>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               ))}
               <SignOutSidebarMenuItem />
             </SidebarMenu>
