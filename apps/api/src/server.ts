@@ -21,7 +21,7 @@ app.register(fastifyJwt, {
   secret: env.JWT_SECRET
 })
 
-// app.addHook('onRequest', authMiddleware)
+app.addHook('onRequest', authMiddleware)
 
 app.register(swaggerPlugin)
 

@@ -7,11 +7,19 @@ import {
 
 import { redirect, useSearchParams } from "next/navigation";
 import { callbackAction } from "./actions";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { Role } from "@/constants/role";
 
 export default function CallbackPage() {
+  return (
+    <Suspense fallback={<p>Carregando...</p>}>
+      <CallbackComponent />
+    </Suspense>
+  );
+}
+
+export const CallbackComponent = () => {
   const params = useSearchParams();
   const code = params.get("code");
   const [error, setError] = useState<string | null>(null);
@@ -45,4 +53,4 @@ export default function CallbackPage() {
       {!error && code && <Spinner size={64} />}
     </UnigamesWarningLayout>
   );
-}
+};
