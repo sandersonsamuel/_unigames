@@ -6,9 +6,7 @@ import dayjs from "dayjs";
 import { HTMLAttributes, useEffect, useState } from "react";
 import { motion } from "motion/react";
 
-interface props extends HTMLAttributes<HTMLDivElement> {}
-
-export const StopWatch = ({ ...rest }: props) => {
+export const StopWatch = (rest: HTMLAttributes<HTMLDivElement>) => {
   const [isClient, setIsClient] = useState(false);
   const targetDate = env.NEXT_PUBLIC_EVENT_DATE;
   const targetTime = env.NEXT_PUBLIC_EVENT_TIME;

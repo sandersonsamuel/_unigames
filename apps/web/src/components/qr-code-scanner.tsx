@@ -59,7 +59,7 @@ export default function CustomQrCodeScanner() {
       setIsScanning(false);
       isActuallyRunningRef.current = false;
     } catch (err) {
-      // Silencia o erro para evitar flood no console
+      
     }
   };
 

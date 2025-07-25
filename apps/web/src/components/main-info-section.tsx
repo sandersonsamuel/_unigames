@@ -6,9 +6,7 @@ import { IMAGES } from "@/constants/images";
 import { motion } from "motion/react";
 import Image from "next/image";
 
-type Props = {};
-
-export const MainInfoSection = ({}: Props) => {
+export const MainInfoSection = () => {
   const unigamesLogo = IMAGES.get("logo-unigames");
   const gradientLayout = IMAGES.get("layout-primary-gradient");
   const scorpion = IMAGES.get("scorpion");

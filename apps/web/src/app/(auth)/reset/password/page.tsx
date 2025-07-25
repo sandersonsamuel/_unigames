@@ -24,9 +24,18 @@ import {
 } from "@/components/unigames-warning-layout";
 
 const ResetPasswordPage = () => {
+  const router = useRouter();
   const params = useSearchParams();
 
   const code = params.get("code");
+
+  const form = useForm<ResetPasswordFormValues>({
+    resolver: zodResolver(resetPasswordSchema),
+    defaultValues: {
+      password: "",
+      confirmPassword: "",
+    },
+  });
 
   if (!code) {
     return (
@@ -39,15 +48,6 @@ const ResetPasswordPage = () => {
   }
 
   const unigamesLogo = IMAGES.get("logo-unigames");
-  const router = useRouter();
-
-  const form = useForm<ResetPasswordFormValues>({
-    resolver: zodResolver(resetPasswordSchema),
-    defaultValues: {
-      password: "",
-      confirmPassword: "",
-    },
-  });
 
   const onSubmit = async (data: ResetPasswordFormValues) => {
     const { error } = await resetPasswordAction(data, code);

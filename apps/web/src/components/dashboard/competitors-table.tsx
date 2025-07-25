@@ -24,12 +24,21 @@ interface CompetitorsTableProps {
   competitors: DashboardCompetitorsType[];
 }
 
+enum PresecenceStatus {
+  ALL = "all",
+  PRESENT = "present",
+  ABSENT = "absent",
+}
+
+enum StudentFilter {
+  ALL = "all",
+  STUDENT = "student",
+}
+
 export function CompetitorsTable({ competitors }: CompetitorsTableProps) {
   const [nameFilter, setNameFilter] = useState("");
-  const [studentFilter, setStudentFilter] = useState<"all" | "student">("all");
-  const [presenceFilter, setPresenceFilter] = useState<
-    "all" | "present" | "absent"
-  >("all");
+  const [studentFilter, setStudentFilter] = useState<StudentFilter>(StudentFilter.ALL);
+  const [presenceFilter, setPresenceFilter] = useState<PresecenceStatus>(PresecenceStatus.ALL);
 
   const filteredCompetitors = useMemo(() => {
     return competitors.filter((competitor) => {
@@ -69,7 +78,7 @@ export function CompetitorsTable({ competitors }: CompetitorsTableProps) {
           <label htmlFor="student-filter">Tipo de Inscrição</label>
           <Select
             value={studentFilter}
-            onValueChange={(value) => setStudentFilter(value as any)}
+            onValueChange={(value) => setStudentFilter(value as StudentFilter)}
           >
             <SelectTrigger id="student-filter" className="w-full">
               <SelectValue placeholder="Filtrar por tipo" />
@@ -85,7 +94,7 @@ export function CompetitorsTable({ competitors }: CompetitorsTableProps) {
           <label htmlFor="presence-filter">Status de Presença</label>
           <Select
             value={presenceFilter}
-            onValueChange={(value) => setPresenceFilter(value as any)}
+            onValueChange={(value) => setPresenceFilter(value as PresecenceStatus)}
           >
             <SelectTrigger id="presence-filter" className="w-full">
               <SelectValue placeholder="Filtrar por presença" />

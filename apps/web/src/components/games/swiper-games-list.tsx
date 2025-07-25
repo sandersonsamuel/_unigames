@@ -40,7 +40,7 @@ export const SwiperGamesList = ({ gamesPromise }: Props) => {
             className="flex items-center h-full"
           >
             {games.map((game) => (
-              <SwiperSlide className="h-full !flex !items-center !justify-center">
+              <SwiperSlide key={game.id} className="h-full !flex !items-center !justify-center">
                 <GameCard game={game} />
               </SwiperSlide>
             ))}

@@ -1,6 +1,5 @@
 import { getSession } from '@/app/actions/user'
 import { env } from '@/env'
-import { createClient } from '@/services/supabase/server'
 
 class HttpError extends Error {
   response: Response
@@ -18,7 +17,7 @@ class HttpError extends Error {
 export async function fetcher<T>(
   url: string,
   options?: RequestInit,
-  appJson: {} = { 'Content-Type': 'application/json' },
+  appJson: Record<string, string> = { 'Content-Type': 'application/json' },
 ): Promise<T> {
 
   const session = await getSession()
@@ -34,7 +33,7 @@ export async function fetcher<T>(
   })
 
   if (!response.ok) {
-    const data = await response.json().catch(() => ({}))
+    const data = await response.json().catch()
     throw new HttpError(response, data)
   }
 
