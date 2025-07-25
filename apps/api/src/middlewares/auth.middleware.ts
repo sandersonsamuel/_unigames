@@ -2,10 +2,20 @@ import { FastifyRequest, FastifyReply } from 'fastify'
 
 export const authMiddleware = async (request: FastifyRequest, reply: FastifyReply) => {
   try {
-    const ignoredPaths = ['/mp/webhook', '/health'];
-    const url = request.raw.url ?? '';
+    const ignoredPaths = [
+      { path: '/games', method: 'GET' },
+      { path: '/mp/webhook', method: 'POST' },
+      { path: '/health', method: 'GET' },
+    ];
 
-    if (ignoredPaths.some(path => url.startsWith(path))) {
+    const url = request.raw.url ?? '';
+    const method = request.method;
+
+    if (
+      ignoredPaths.some(
+        route => url === route.path && method === route.method
+      )
+    ) {
       return;
     }
 
