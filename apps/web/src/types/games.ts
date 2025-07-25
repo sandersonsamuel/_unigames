@@ -11,6 +11,7 @@ export type GameResponseType = {
 
 export type GameInPurchaseType = GameResponseType & {
   price: number
+  description: string
 }
 
 export type GameType = Omit<GameByIdType, "purchasesCount">

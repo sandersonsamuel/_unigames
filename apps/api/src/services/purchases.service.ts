@@ -63,7 +63,8 @@ export async function getPurchasesByUserId(userId: string) {
       id: schema.games.id,
       name: schema.games.name,
       image: schema.games.image,
-      price: schema.games.price
+      price: schema.games.price,
+      description: schema.games.description,
     }
   })
     .from(schema.purchases)
