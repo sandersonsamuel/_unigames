@@ -1,12 +1,5 @@
 "use client";
 
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: "Nova Senha",
-  description: "Página para definir uma nova senha.",
-};
-
 import { Button } from "@/components/ui/button";
 import {
   Form,

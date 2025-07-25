@@ -1,11 +1,10 @@
 import { db } from '../db/connection';
 import { schema } from '../db/schemas';
-import { eq, and, isNull } from 'drizzle-orm';
+import { eq, and, isNull, or, ne, gt, sql, InferSelectModel } from 'drizzle-orm';
 import createError from 'http-errors';
-import z from 'zod/v4'
-import { purchaseSchema } from '../schemas/purchases.schema';
+import { purchases } from '../db/schemas/purchases';
 
-export type PurchaseType = z.infer<typeof purchaseSchema>
+export type PurchaseType = InferSelectModel<typeof purchases>
 export type CreatePurchaseResponse = {
   purchaseId: string
   game: {
@@ -49,6 +48,8 @@ export const updatePurchase = async (id: string, payload: Partial<Omit<PurchaseT
 }
 
 export async function getPurchasesByUserId(userId: string) {
+  const oneHourAgo = sql`now() - interval '1 hour'`
+
   return await db.select({
     id: schema.purchases.id,
     userId: schema.purchases.userId,
@@ -57,13 +58,22 @@ export async function getPurchasesByUserId(userId: string) {
     paymentStatus: schema.purchases.paymentStatus,
     mpPaymentId: schema.purchases.mpPaymentId,
     paidAt: schema.purchases.paidAt,
+    initPoint: schema.purchases.initPoint,
     game: {
       id: schema.games.id,
       name: schema.games.name,
       image: schema.games.image,
       price: schema.games.price
     }
-  }).from(schema.purchases)
-  .leftJoin(schema.games, eq(schema.games.id, schema.purchases.gameId))
-  .where(and(eq(schema.purchases.userId, userId), isNull(schema.purchases.deletedAt)))
+  })
+    .from(schema.purchases)
+    .leftJoin(schema.games, eq(schema.games.id, schema.purchases.gameId))
+    .where(and(
+      eq(schema.purchases.userId, userId),
+      isNull(schema.purchases.deletedAt),
+      or(
+        ne(schema.purchases.paymentStatus, 'PENDING'),
+        gt(schema.purchases.createdAt, oneHourAgo)
+      )
+    ))
 }

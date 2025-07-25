@@ -31,6 +31,7 @@ export async function handleMercadoPagoWebhook(type: string, data: { id: string 
 
     const paymentMethod = paymentData.payment_type_id === 'credit_card' ? 'CARD' : 'PIX';
     const competitors = paymentData.metadata.competitors as competitorsType;
+    
     await db.update(schema.purchases).set({
       paymentStatus: 'PAID',
       paymentMethod,

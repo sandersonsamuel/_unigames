@@ -27,6 +27,7 @@ export type PurchaseType = {
   game: GameInPurchaseType
   paymentMethod: PaymentMethod
   paymentStatus: PaymentStatus
+  initPoint: string 
   mpPaymentId: string
   paidAt: Date
 }

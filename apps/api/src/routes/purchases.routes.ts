@@ -43,7 +43,8 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
       }
 
       await updatePurchase(purchaseId, {
-        mpPaymentId: createdPreference.id
+        mpPaymentId: createdPreference.id,
+        initPoint: createdPreference.init_point
       })
 
       return reply.status(201).send({

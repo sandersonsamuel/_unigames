@@ -4,6 +4,7 @@ import { GameCard } from "@/components/games/game-card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { GameType } from "@/types/games";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { motion } from "motion/react";
 import { use } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -61,7 +62,7 @@ export const SwiperGamesListSkeleton = () => {
     <div className="h-[300px] relative">
       <Swiper
         loop
-        autoplay={{ delay: 500 }}
+        autoplay={{ delay: 1300 }}
         navigation={{
           nextEl: ".swiper-button-next-custom",
           prevEl: ".swiper-button-prev-custom",
@@ -76,12 +77,22 @@ export const SwiperGamesListSkeleton = () => {
         }}
         className="flex items-center h-full"
       >
-        {[...Array(5)].map((_, index) => (
+        {[...Array(10)].map((_, index) => (
           <SwiperSlide
             key={index}
             className="h-full !flex !items-center !justify-center"
           >
-            <Skeleton className="w-[250px] min-h-[300px] max-[350px] cursor-pointer bg-secondary" />
+            <motion.div
+              className="w-[250px] h-[300px] max-h-[350px] cursor-pointer bg-card border-4 flex flex-col items-center justify-center gap-2"
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+            >
+              <Skeleton className="size-[194px]"/>
+              <div className="px-6 w-full flex flex-col gap-1">
+                <Skeleton className="w-full h-[20px]"/>
+                <Skeleton className="w-full h-[20px]"/>
+              </div>
+            </motion.div>
           </SwiperSlide>
         ))}
       </Swiper>

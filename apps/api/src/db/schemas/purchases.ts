@@ -11,6 +11,7 @@ export const purchases = pgTable("purchases", {
   paymentMethod: paymentMethod('payment_method'),
   paymentStatus: paymentStatus('payment_status').notNull().default('PENDING'),
   mpPaymentId: varchar(),
+  initPoint: varchar('init_point', { length: 500 }),
   paidAt: timestamp("paid_at", { withTimezone: true }),
   deletedAt: timestamp("deleted_at", { withTimezone: true }),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),

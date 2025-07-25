@@ -15,7 +15,7 @@ export const OverViewTab = async () => {
         </DashboardCard>
 
         <DashboardCard title="Jogadores totais" icon={<TicketPlus />}>
-          <h3 className="text-3xl">{data.totalGames}</h3>
+          <h3 className="text-3xl">{data.totalCompetitors}</h3>
         </DashboardCard>
 
         <DashboardCard title="Receita Total" icon={<BanknoteArrowUp />}>

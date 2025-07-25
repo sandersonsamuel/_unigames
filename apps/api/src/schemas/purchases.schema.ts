@@ -8,6 +8,7 @@ export const purchaseWithGameSchema = z.object({
   userId: z.string(),
   gameId: z.string(),
   mpPaymentId: z.string().nullable(),
+  initPoint: z.string().nullable(),
   paidAt: z.date().nullable(),
   game: z.object({
     id: z.string(),

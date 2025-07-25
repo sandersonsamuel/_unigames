@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  const games = getGames()
+  const games = getGames();
 
   return (
     <main className="min-h-screen mt-10 md:mt-20">

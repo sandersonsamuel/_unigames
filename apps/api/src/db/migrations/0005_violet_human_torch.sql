@@ -1,0 +1,1 @@
+ALTER TABLE "purchases" ADD COLUMN "init_point" varchar(500);
