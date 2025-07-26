@@ -4,6 +4,9 @@ import { competitorsSchema } from "../schemas/competitors.schema";
 import { purchaseWithGameSchema } from '../schemas/purchases.schema';
 import { createPurchase, getPurchasesByUserId, updatePurchase } from '../services/purchases.service';
 import { createPreference } from "../services/preference.service";
+import { roleGuard } from "../plugins/role-guard.plugin";
+import { Role } from "../types/role.types";
+import { SupabaseJWT } from "../types/supabase.types";
 
 export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
   app.post(
@@ -12,7 +15,6 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
       schema: {
         body: z.object({
           gameId: z.uuid(),
-          userId: z.uuid(),
           email: z.email(),
           competitors: competitorsSchema,
         }),
@@ -27,9 +29,11 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
           }),
         },
       },
+      preHandler: [roleGuard([Role.GAMER])]
     }, async (request, reply) => {
 
-      const { competitors, email, gameId, userId } = request.body;
+      const { competitors, email, gameId } = request.body;
+      const { aud: userId } = request.user as SupabaseJWT
 
       const { game, purchaseId } = await createPurchase({
         userId,
@@ -53,15 +57,16 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
     }
   )
 
-  app.get('/:userId', {
+  app.get("/", {
     schema: {
-      params: z.object({ userId: z.string() }),
       response: { 200: z.array(purchaseWithGameSchema) },
       tags: ["Purchases"],
       summary: "Get purchases by userId",
-    }
+    },
+    preHandler: [roleGuard([Role.GAMER])]
   }, async (request, reply) => {
-    const purchases = await getPurchasesByUserId(request.params.userId);
+    const { sub: userId } = request.user as SupabaseJWT
+    const purchases = await getPurchasesByUserId(userId);
     reply.status(200).send(purchases);
   });
 }

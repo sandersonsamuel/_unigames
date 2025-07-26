@@ -10,7 +10,7 @@ import { authMiddleware } from './middlewares/auth.middleware'
 const app = Fastify()
 
 app.register(fastifyCors, {
-  origin: "*",
+  origin: env.CLIENT_URL,
   methods: ["GET", "PATCH", "POST", "PUT", "DELETE"]
 });
 

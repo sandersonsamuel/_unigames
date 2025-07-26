@@ -3,6 +3,8 @@ import z from "zod/v4";
 import { dashboardGetGamesStatsSchema, dashboardOverviewSchema, dashboardTicketsSchema } from '../schemas/dashboard.schema';
 import { getAllCompetitors } from "../services/competitors.service";
 import { getDashboardOverview, getGamesStats, getStudentsSheet } from '../services/dashboard.service';
+import { roleGuard } from "../plugins/role-guard.plugin";
+import { Role } from "../types/role.types";
 
 export const dashboardRoutes: FastifyPluginAsyncZod = async (app) => {
   app.get('/overview', {
@@ -11,7 +13,8 @@ export const dashboardRoutes: FastifyPluginAsyncZod = async (app) => {
       description: "Fetches an overview of the dashboard including total purchases, payment methods data, and total amount.",
       tags: ["Dashboard"],
       response: { 200: dashboardOverviewSchema }
-    }
+    },
+    preHandler: [roleGuard([Role.ADMIN])]
   }, async (_, reply) => {
     const overview = await getDashboardOverview();
     reply.status(200).send(overview);
@@ -24,7 +27,8 @@ export const dashboardRoutes: FastifyPluginAsyncZod = async (app) => {
       },
       tags: ["Dashboard"],
       summary: "Get competitors"
-    }
+    },
+    preHandler: [roleGuard([Role.ADMIN])]
   }, async (_, reply) => {
     const competitors = await getAllCompetitors();
     const competitorsPresent = competitors.filter((competitor) => competitor.ticketRedeemed).length;
@@ -46,7 +50,8 @@ export const dashboardRoutes: FastifyPluginAsyncZod = async (app) => {
       response: {
         200: z.array(dashboardGetGamesStatsSchema)
       }
-    }
+    },
+    preHandler: [roleGuard([Role.ADMIN])]
   }, async (_, reply) => {
     const games = await getGamesStats()
     reply.status(200).send(games)
@@ -66,7 +71,8 @@ export const dashboardRoutes: FastifyPluginAsyncZod = async (app) => {
       }),
       tags: ["Dashboard"],
       summary: "Get students sheet",
-    }
+    },
+    preHandler: [roleGuard([Role.ADMIN])]
   }, async (request, reply) => {
 
     const { isPresent } = request.query

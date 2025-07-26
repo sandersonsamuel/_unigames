@@ -1,6 +1,8 @@
 import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import z from "zod/v4";
 import { getCompetitorsByPurchaseId, setTicketRedeemed } from '../services/competitors.service';
+import { roleGuard } from "../plugins/role-guard.plugin";
+import { Role } from "../types/role.types";
 
 export const competitorsRoutes: FastifyPluginAsyncZod = async (app) => {
 
@@ -13,7 +15,8 @@ export const competitorsRoutes: FastifyPluginAsyncZod = async (app) => {
         200: z.array(z.object({ id: z.string(), name: z.string(), registration: z.string().nullable() })),
         404: z.object({ message: z.string() })
       }
-    }
+    },
+    preHandler: [roleGuard([Role.GAMER])]
   }, async (request, reply) => {
     const { purchaseId } = request.params;
     const competitors = await getCompetitorsByPurchaseId(purchaseId);
@@ -32,7 +35,8 @@ export const competitorsRoutes: FastifyPluginAsyncZod = async (app) => {
         204: z.null(),
         403: z.object({ message: z.string() })
       }
-    }
+    },
+    preHandler: [roleGuard([Role.ADMIN])]
   }, async (request, reply) => {
     const { competitorId } = request.params;
     const result = await setTicketRedeemed(competitorId);

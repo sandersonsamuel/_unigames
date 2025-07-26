@@ -9,10 +9,8 @@ import {
   CreateSubscriptionType,
 } from '@/types/subscription'
 
-export const getPurchasesByUserId = async (
-  userId: string,
-): Promise<PurchaseType[]> => {
-  return fetcher<PurchaseType[]>(`/purchases/${userId}`)
+export const getPurchasesByUserId = async (): Promise<PurchaseType[]> => {
+  return fetcher<PurchaseType[]>(`/purchases`)
 }
 
 export const createPurchase = async (
@@ -27,9 +25,8 @@ export const createPurchase = async (
 export const createSubscription = async ({
   gameId,
   competitors,
-  userId,
   email,
-}: CreateSubscriptionType & { userId: string; email: string }): Promise<
+}: CreateSubscriptionType & { email: string }): Promise<
   CreateSubscriptionResponseType
 > => {
   return fetcher<CreateSubscriptionResponseType>('/purchases/subscribe', {
@@ -37,7 +34,6 @@ export const createSubscription = async ({
     body: JSON.stringify({
       gameId,
       competitors,
-      userId,
       email,
     }),
   })

@@ -2,6 +2,8 @@ import { FastifyPluginAsyncZod } from "fastify-type-provider-zod";
 import z from "zod/v4";
 import { listGames, getGameById, createGame, deleteGame, updateGame } from '../services/games.service';
 import { gameSchema } from "../schemas/game.schema";
+import { roleGuard } from "../plugins/role-guard.plugin";
+import { Role } from "../types/role.types";
 
 export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
   app.get('/', {
@@ -20,7 +22,7 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
       },
       tags: ["Games"],
       summary: "List all games",
-    }
+    },
   }, async (_, reply) => {
     const games = await listGames();
     reply.status(200).send(games);
@@ -42,6 +44,7 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
           purchasesCount: z.number(),
         })
       },
+      preHandler: [roleGuard([Role.ADMIN, Role.GAMER])],
       tags: ["Games"],
       summary: "Get a game by id",
     }
@@ -60,7 +63,8 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
       },
       tags: ["Games"],
       summary: "Create a new game",
-    }
+    },
+    preHandler: [roleGuard([Role.ADMIN])]
   }, async (request, reply) => {
     const newGame = await createGame(request.body);
     reply.status(201).send(newGame);
@@ -73,6 +77,7 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
       summary: "Delete a game",
       response: { 204: z.null() }
     },
+    preHandler: [roleGuard([Role.ADMIN])]
   }, async (request, reply) => {
     await deleteGame(request.params.id);
     reply.status(204).send();
@@ -85,7 +90,8 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
       tags: ["Games"],
       summary: "Update a game",
       response: { 204: z.null() }
-    }
+    },
+    preHandler: [roleGuard([Role.ADMIN])]
   }, async (request, reply) => {
     await updateGame(request.params.id, request.body);
     reply.status(204).send();

@@ -12,7 +12,7 @@ const PURCHASES_QUERY_KEY = ['purchases']
 export const usePurchasesByUserIdQuery = (userId?: string) => {
   return useQuery({
     queryKey: [PURCHASES_QUERY_KEY, userId],
-    queryFn: () => getPurchasesByUserId(userId!),
+    queryFn: () => getPurchasesByUserId(),
     enabled: !!userId,
     refetchOnWindowFocus: true,
   })
@@ -36,7 +36,7 @@ export const useCreateSubscriptionMutation = () => {
       if (!user) {
         throw new Error('User not found')
       }
-      return createSubscription({ ...data, userId: user.id, email: user.email! })
+      return createSubscription({ ...data, email: user.email! })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PURCHASES_QUERY_KEY })

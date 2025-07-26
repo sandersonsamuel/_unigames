@@ -15,8 +15,16 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "moduleResolution": "node16"
+    "moduleResolution": "node16",
+    "typeRoots": [
+      "./node_modules/@types", 
+      "./types"                
+    ]
   },
+  "include": [
+    "src/**/*", 
+    "types/**/*"
+  ],
   "exclude": [
     "drizzle.config.ts"
   ]
