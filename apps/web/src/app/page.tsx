@@ -31,11 +31,42 @@ export default async function Home() {
           <SwiperGamesList gamesPromise={games} />
         </Suspense>
       </section>
-      <section className="w-full p-10 px-5 md:px-10 bg-secondary-foreground">
+
+      <section className="w-full p-10 px-5 md:px-10 bg-secondary-foreground flex flex-col items-center">
+        <h2 className="text-3xl font-bold text-center xl:text-4xl mb-10">
+          Principais Regras
+        </h2>
+
+        <ul className="flex flex-col gap-6 text-lg max-w-4xl">
+          <li>⚠️ Não danificar ou forçar os controles.</li>
+          <li>⚠️ Chegar no horário da partida (tolerância de 5 minutos).</li>
+          <li>
+            ⚠️ Proibido qualquer tipo de agressão, zombaria ou desrespeito.
+          </li>
+          <li>⚠️ Apenas configurações padrão dos jogos são permitidas.</li>
+          <li>
+            ⚠️ Jogadores mobile devem verificar se o jogo roda bem no próprio
+            celular.
+          </li>
+          <li>⚠️ Tolerância zero para quem descumprir as regras.</li>
+        </ul>
+      </section>
+      <section className="w-full p-10 px-5 md:px-10">
         <h2 className="text-2xl font-bold text-center xl:text-3xl mb-10">
           Colaboradores
         </h2>
+        <div className="flex w-full justify-center gap-5">
+          <img
+            className="w-[200px] mix-blend-lighten"
+            src="animesgeek.png"
+            alt="logo animes geek"
+          />
+          <img className="w-[200px]" src="bitmail.png" alt="logo bit mail" />
+        </div>
       </section>
+      <footer className="w-full p-10 px-5 md:px-10 bg-secondary-foreground flex flex-col items-center">
+        <p>Software desenvolvido pela LAADS</p>
+      </footer>
     </main>
   );
 }

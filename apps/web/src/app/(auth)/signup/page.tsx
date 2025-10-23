@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { signupAction } from "./actions";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { signinWithGoogleAction } from "../signin/actions";
 
 const SignupPage = () => {
   const unigamesLogo = IMAGES.get("logo-unigames");
@@ -37,14 +38,22 @@ const SignupPage = () => {
 
   const onSubmit = async (data: SignupFormValues) => {
     const response = await signupAction(data);
-    if (response.status === 'error') {
+    if (response.status === "error") {
       return toast.error(response.message);
     }
 
     router.push("/verify/email");
   };
 
-  const handleGoogleLogin = async () => {};
+  const handleGoogleLogin = async () => {
+    const { error, data } = await signinWithGoogleAction();
+
+    if (error) {
+      return toast.error(error.message);
+    }
+
+    router.push(data.url);
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4">

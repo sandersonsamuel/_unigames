@@ -19,7 +19,7 @@ export const signupAction = async (
       emailRedirectTo: env.NEXT_PUBLIC_CLIENT_URL + "/auth/callback",
       data: {
         name: data.name,
-        role: Role.GAMER,
+        role: Role.ADMIN,
       },
     },
   });
