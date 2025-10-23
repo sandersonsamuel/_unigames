@@ -17,9 +17,6 @@ export default async function Games() {
       </header>
 
       <p className="text-sm">Adicione os que estarão presentes no evento.</p>
-
-      <h2>Adicionados recentemente:</h2>
-
       <GamesList />
     </div>
   );

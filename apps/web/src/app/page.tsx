@@ -57,14 +57,16 @@ export default async function Home() {
         </h2>
         <div className="flex w-full justify-center gap-5">
           <img
-            className="w-[200px] mix-blend-lighten"
+            title="Animes Geek"
+            className="w-[100px] sm:w-[200px] mix-blend-lighten"
             src="animesgeek.png"
             alt="logo animes geek"
           />
-          <img className="w-[200px]" src="bitmail.png" alt="logo bit mail" />
+          <img title="Bitmail" className="w-[100px] sm:w-[200px]" src="bitmail.png" alt="logo bit mail" />
+          <img title="Nerd Figures" className="w-[100px] sm:w-[200px] mix-blend-lighten" src="nerd_figures.png" alt="logo nerd figures" />
         </div>
       </section>
-      <footer className="w-full p-10 px-5 md:px-10 bg-secondary-foreground flex flex-col items-center">
+      <footer className="w-full text-center text-xs sm:text-start sm:text-lg p-10 px-5 md:px-10 bg-secondary-foreground flex flex-col items-center">
         <p>Software desenvolvido pela LAADS</p>
       </footer>
     </main>
