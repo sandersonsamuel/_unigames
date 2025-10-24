@@ -33,7 +33,7 @@ export const purchaseRoutes: FastifyPluginAsyncZod = async (app) => {
     }, async (request, reply) => {
 
       const { competitors, email, gameId } = request.body;
-      const { aud: userId } = request.user as SupabaseJWT
+      const { sub: userId } = request.user as SupabaseJWT
 
       const { game, purchaseId } = await createPurchase({
         userId,
