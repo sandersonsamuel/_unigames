@@ -4,10 +4,10 @@ export const gameSchema = z.object({
   name: z.string(),
   description: z.string(),
   image: z.url(),
-  price: z.number().int().positive(),
-  vacancies: z.number().int().positive().optional(),
+  price: z.number().int().nonnegative(),
+  vacancies: z.number().int().nonnegative().optional(),
   competition: z.boolean().optional(),
-  teamSize: z.number().int().positive(),
+  teamSize: z.number().int().nonnegative(),
 });
 
 export const gameSchemaReponse = z.object({
