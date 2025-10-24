@@ -8,6 +8,9 @@ import { Role } from "../types/role.types";
 export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
   app.get('/', {
     schema: {
+      querystring: z.object({
+        competition: z.string().optional(),
+      }),
       response: {
         200: z.array(z.object({
           id: z.string(),
@@ -23,8 +26,12 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
       tags: ["Games"],
       summary: "List all games",
     },
-  }, async (_, reply) => {
-    const games = await listGames();
+  }, async (request, reply) => {
+    const { competition } = request.query;
+    console.log(competition);
+    const isCompetition = competition === undefined ? undefined : competition === 'true';
+    const games = await listGames(isCompetition);
+    
     reply.status(200).send(games);
   });
 

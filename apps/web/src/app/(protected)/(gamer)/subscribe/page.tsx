@@ -13,7 +13,7 @@ import { getGames } from "@/http/api/games-api";
 import { Suspense } from "react";
 
 export default async function Subscribe() {
-  const games = getGames();
+  const games = getGames(true);
 
   return (
     <div className="flex flex-col items-center p-0 md:p-4 gap-3 w-full mx-auto pr-7">

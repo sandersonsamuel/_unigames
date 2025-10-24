@@ -1,13 +1,18 @@
 import { fetcher } from '@/lib/fetcher'
 import { CreateGameType, GameByIdType, GameType } from '@/types/games'
 
-export const getGames = async (): Promise<GameType[]> => {
-  return fetcher<GameType[]>('/games', {
-    next: {
-      tags: ["get-games"]
-    }
-  })
-}
+export const getGames = async (isCompetition?: boolean): Promise<GameType[]> => {
+  const query = typeof isCompetition === "boolean"
+    ? `?competition=${isCompetition}`
+    : "";
+
+  console.log(query);
+  
+
+  return fetcher<GameType[]>(`/games${query}`, {
+    next: { tags: ["get-games"] },
+  });
+};
 
 export const getGameById = async (gameId: string): Promise<GameByIdType> => {
   return fetcher<GameByIdType>(`/games/${gameId}`)
