@@ -28,10 +28,10 @@ export function PurchaseCard({ purchase }: PurchaseCardProps) {
     return (
       <button className="text-start" onClick={redirectToInitPoint}>
         <Card className="cursor-pointer hover:bg-accent/35 transition-colors duration-200 hover:shadow-md">
-          <CardHeader>
-            <div className="flex items-center justify-between">
+          <CardHeader className="px-3 md:px-6">
+            <div className="flex flex-wrap items-center justify-between">
               <div className="flex-1 gap-2">
-                <CardTitle className="text-lg font-semibold line-clamp-1">
+                <CardTitle className="text-md font-semibold line-clamp-2">
                   {purchase.game.name}
                 </CardTitle>
               </div>
@@ -41,7 +41,7 @@ export function PurchaseCard({ purchase }: PurchaseCardProps) {
               </Badge>
             </div>
           </CardHeader>
-          <CardContent className="space-y-2">
+          <CardContent className="space-y-2 px-3 md:px-6">
             <p className="font-semibold text-lg">
               {(purchase.game.price / 100).toLocaleString("pt-BR", {
                 style: "currency",
@@ -49,7 +49,7 @@ export function PurchaseCard({ purchase }: PurchaseCardProps) {
               })}
             </p>
             <p
-              className="text-xs lg:text-sm text-muted-foreground line-clamp-1"
+              className="text-xs lg:text-sm text-muted-foreground text-wrap"
               title="Clique para voltar ao pagamento."
             >
               Clique para voltar ao pagamento.

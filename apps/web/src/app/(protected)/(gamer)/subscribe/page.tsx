@@ -16,7 +16,7 @@ export default async function Subscribe() {
   const games = getGames();
 
   return (
-    <div className="flex flex-col items-center p-0 md:p-4 gap-3 w-full mx-auto">
+    <div className="flex flex-col items-center p-0 md:p-4 gap-3 w-full mx-auto pr-7">
       <Card className="w-full bg-transparent border-none">
         <CardHeader className="block md:flex w-full justify-between space-y-2 md:space-y-0 px-0">
           <div className="space-y-1">
@@ -33,7 +33,7 @@ export default async function Subscribe() {
             </Suspense>
           </CardAction>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-0">
           <Suspense fallback={<div>Carregando...</div>}>
             <SubscriptionList />
           </Suspense>
