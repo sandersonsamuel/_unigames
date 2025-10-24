@@ -5,12 +5,12 @@ import { revalidateTagAction } from '@/app/actions/revalidate'
 
 const GAMES_QUERY_KEY = ['games']
 
-export const useGamesQuery = () => {
+export const useGamesQuery = (isCompetition?: boolean) => {
   return useQuery({
-    queryKey: GAMES_QUERY_KEY,
-    queryFn: getGames,
-  })
-}
+    queryKey: ["get-games", isCompetition],
+    queryFn: () => getGames(isCompetition),
+  });
+};
 
 export const useGameByIdQuery = (gameId: string) => {
   return useQuery({

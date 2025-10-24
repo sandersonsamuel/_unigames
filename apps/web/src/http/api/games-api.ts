@@ -6,9 +6,6 @@ export const getGames = async (isCompetition?: boolean): Promise<GameType[]> => 
     ? `?competition=${isCompetition}`
     : "";
 
-  console.log(query);
-  
-
   return fetcher<GameType[]>(`/games${query}`, {
     next: { tags: ["get-games"] },
   });

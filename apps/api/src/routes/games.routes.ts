@@ -28,7 +28,6 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
     },
   }, async (request, reply) => {
     const { competition } = request.query;
-    console.log(competition);
     const isCompetition = competition === undefined ? undefined : competition === 'true';
     const games = await listGames(isCompetition);
     
