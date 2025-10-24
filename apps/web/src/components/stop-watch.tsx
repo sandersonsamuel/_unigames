@@ -104,7 +104,7 @@ export const StopWatch = (rest: HTMLAttributes<HTMLDivElement>) => {
           No dia {dayjs(targetDate).format("DD/MM/YYYY")} ás {targetTime}h
         </p>
 
-        <p className="xl:text-3xl md:text-xl text-lg font-semibold mt-5 text-center text-primary">
+        <p className="xl:text-3xl md:text-xl text-lg font-semibold mt-5 text-justify text-primary">
           R. Aarão Réis, 1000, Centro, Caxias - MA, 65606-020
         </p>
       </div>

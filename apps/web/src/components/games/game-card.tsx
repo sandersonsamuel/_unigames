@@ -22,7 +22,7 @@ export const GameCard = ({ game }: Props) => {
             <Image src={game.image} alt={game.name} width={250} height={250} />
           </CardTitle>
         </CardHeader>
-        <CardContent className="text-sm line-clamp-2 break-words">
+        <CardContent className="text-xs line-clamp-2 break-words">
           <div className="flex flex-col gap-1">
             <p>{game.name}</p>
             <p className="text-primary/80">

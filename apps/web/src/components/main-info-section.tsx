@@ -40,7 +40,7 @@ export const MainInfoSection = () => {
           />
 
           <div className="md:absolute flex flex-col items-center xl:gap-8 lg:gap-4 md:gap-3 gap-5 md:left-1/2 md:top-1/2 md:transform md:-translate-x-1/2 md:-translate-y-1/2">
-            <h1 className="xl:text-5xl xl:w-[1000px] lg:text-4xl lg:w-[700px] md:text-3xl md:w-[500px] text-3xl text-center">
+            <h1 className="xl:text-5xl xl:w-[1000px] lg:text-4xl lg:w-[700px] md:text-3xl md:w-[500px] text-[27px] text-center">
               Torneio de jogos eletrônicos Unifacema
             </h1>
             <motion.span
@@ -51,7 +51,7 @@ export const MainInfoSection = () => {
                 size={"lg"}
                 variant={"secondary"}
                 onClick={() => redirectByRole()}
-                className="text-2xl md:hidden lg:block"
+                className="text-xl md:hidden lg:block"
               >
                 INSCREVA-SE
               </Button>

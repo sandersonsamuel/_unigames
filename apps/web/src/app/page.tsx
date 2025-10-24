@@ -24,7 +24,7 @@ export default async function Home() {
         <StopWatch />
       </section>
       <section className="w-full p-10 px-5 md:px-10">
-        <h2 className="text-3xl font-bold text-center xl:text-4xl mb-10">
+        <h2 className="text-xl sm:text-3xl font-bold text-center xl:text-4xl mb-10">
           Jogos disponíveis
         </h2>
         <Suspense fallback={<SwiperGamesListSkeleton />}>
@@ -37,7 +37,7 @@ export default async function Home() {
           Principais Regras
         </h2>
 
-        <ul className="flex flex-col gap-6 text-lg max-w-4xl">
+        <ul className="flex flex-col gap-6 text-lg max-w-4xl text-justify">
           <li>⚠️ Não danificar ou forçar os controles.</li>
           <li>⚠️ Chegar no horário da partida (tolerância de 5 minutos).</li>
           <li>
@@ -51,19 +51,19 @@ export default async function Home() {
           <li>⚠️ Tolerância zero para quem descumprir as regras.</li>
         </ul>
       </section>
-      <section className="w-full p-10 px-5 md:px-10">
-        <h2 className="text-2xl font-bold text-center xl:text-3xl mb-10">
+      <section className="w-full py-10 md:px-10">
+        <h2 className="text-xl sm:text-2xl font-bold text-center xl:text-3xl mb-10">
           Colaboradores
         </h2>
         <div className="flex w-full justify-center gap-5">
           <img
             title="Animes Geek"
-            className="w-[100px] sm:w-[200px] mix-blend-lighten"
+            className="w-[85px] sm:w-[200px] mix-blend-lighten"
             src="animesgeek.png"
             alt="logo animes geek"
           />
-          <img title="Bitmail" className="w-[100px] sm:w-[200px]" src="bitmail.png" alt="logo bit mail" />
-          <img title="Nerd Figures" className="w-[100px] sm:w-[200px] mix-blend-lighten" src="nerd_figures.png" alt="logo nerd figures" />
+          <img title="Bitmail" className="w-[85px] sm:w-[200px]" src="bitmail.png" alt="logo bit mail" />
+          <img title="Nerd Figures" className="w-[85px] sm:w-[200px] mix-blend-lighten" src="nerd_figures.png" alt="logo nerd figures" />
         </div>
       </section>
       <footer className="w-full text-center text-xs sm:text-start sm:text-lg p-10 px-5 md:px-10 bg-secondary-foreground flex flex-col items-center">
