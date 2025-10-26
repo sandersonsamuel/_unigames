@@ -13,16 +13,14 @@ export const authMiddleware = async (request: FastifyRequest, reply: FastifyRepl
 
     if (
       ignoredPaths.some(
-        route => url === route.path && method === route.method
+        route => url.startsWith(route.path) && method === route.method
       )
     ) {
       return;
     }
 
-    await request.jwtVerify()
+    await request.jwtVerify();
   } catch {
-    return reply.status(401).send({
-      message: "Unauthorized"
-    })
+    return reply.status(401).send({ message: 'Unauthorized' });
   }
-}
+};
