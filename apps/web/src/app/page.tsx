@@ -58,12 +58,13 @@ export default async function Home() {
         <div className="flex w-full justify-center gap-5">
           <img
             title="Animes Geek"
-            className="w-[85px] sm:w-[200px] mix-blend-lighten"
+            className="w-[50px] sm:w-[120px] md:w-[150px] mix-blend-lighten"
             src="animesgeek.png"
             alt="logo animes geek"
           />
-          <img title="Bitmail" className="w-[85px] sm:w-[200px]" src="bitmail.png" alt="logo bit mail" />
-          <img title="Nerd Figures" className="w-[85px] sm:w-[200px] mix-blend-lighten" src="nerd_figures.png" alt="logo nerd figures" />
+          <img title="Bitmail" className="w-[50px] sm:w-[120px] md:w-[150px]" src="bitmail.png" alt="logo bit mail" />
+          <img title="Nerd Figures" className="w-[50px] sm:w-[120px] md:w-[150px] mix-blend-lighten" src="nerd_figures.png" alt="logo nerd figures" />
+          <img title="Livraria Cultural" className="w-[50px] sm:w-[120px] md:w-[150px] mix-blend-lighten" src="cultural.png" alt="logo livrario cultural" />
         </div>
       </section>
       <footer className="w-full text-center text-xs sm:text-start sm:text-lg p-10 px-5 md:px-10 bg-secondary-foreground flex flex-col items-center">
