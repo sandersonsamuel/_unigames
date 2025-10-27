@@ -33,9 +33,9 @@ EXPOSE 3333
 
 ENV NODE_ENV=production
 ENV PORT=3333
-ENV CLIENT_URL=http://localhost:3000
+ENV CLIENT_URL=https://unigames-web.vercel.app
 ENV DATABASE_URL="postgresql://postgres.kyiuvqvwhaxzqyyaxkpa:unigames20252@aws-0-sa-east-1.pooler.supabase.com:5432/postgres"
-ENV MP_ACCESS_TOKEN=TEST-7053202351013149-070523-8dbc99a8529ee70cd4e6ce24a7e00ddf-278389952
-ENV MP_WEBHOOK_SECRET=beee34a548c83d8932e1eadb74f90afde9e8182a3666d8b10b28eb5f44628c0c
+ENV MP_ACCESS_TOKEN=APP_USR-2506908303186258-102322-6f7db90702ff98beab5eb4330ba00b56-2942601564
+ENV MP_WEBHOOK_SECRET=f649d671ba557beb34be6aaf96d414a37aeb641ca0b7b4c1d6a3183a961daa3e
 
 CMD ["node", "dist/server.js"]
