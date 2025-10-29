@@ -1,38 +1,44 @@
-"use client"
+"use client";
 
-import type { GameByIdType, GameResponseType } from "@/types/games"
-import type { SubscriptionType } from "@/types/subscription"
-import { newSubscriptionContext } from "@/components/subscription/new-subscription-provider"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { useCreateSubscriptionMutation } from "@/http/hooks/use-purchases"
-import { newSubscriptionSchema } from "@/schemas/subscription"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { ArrowBigLeft } from "lucide-react"
-import { use, useState } from "react"
-import { useForm } from "react-hook-form"
-import { Button } from "../ui/button"
-import { Form } from "../ui/form"
-import { FirstStepSubscription } from "./first-step-subscription"
-import { SecondStepSubscription } from "./second-step-subscription"
-import { ThirdStepSubscription } from "./third-step-subscription"
+import type { GameByIdType, GameResponseType } from "@/types/games";
+import type { SubscriptionType } from "@/types/subscription";
+import { newSubscriptionContext } from "@/components/subscription/new-subscription-provider";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { useCreateSubscriptionMutation } from "@/http/hooks/use-purchases";
+import { newSubscriptionSchema } from "@/schemas/subscription";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowBigLeft } from "lucide-react";
+import { use, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Button } from "../ui/button";
+import { Form } from "../ui/form";
+import { FirstStepSubscription } from "./first-step-subscription";
+import { SecondStepSubscription } from "./second-step-subscription";
+import { ThirdStepSubscription } from "./third-step-subscription";
 
 type Props = {
-  gamesPromise: Promise<GameResponseType[]>
-}
+  gamesPromise: Promise<GameResponseType[]>;
+};
 
 export const NewSubscriptionDialog = ({ gamesPromise }: Props) => {
-  const games = use(gamesPromise)
-  const [step, setStep] = useState<number>(0)
-  const [currentGame, setCurrentGame] = useState<GameByIdType | null>(null)
+  const games = use(gamesPromise);
+  const [step, setStep] = useState<number>(0);
+  const [currentGame, setCurrentGame] = useState<GameByIdType | null>(null);
 
-  const { mutateAsync: createSubscription } = useCreateSubscriptionMutation()
+  const { mutateAsync: createSubscription } = useCreateSubscriptionMutation();
 
   const form = useForm<SubscriptionType>({
     resolver: zodResolver(newSubscriptionSchema),
     defaultValues: {
       gameId: "",
     },
-  })
+  });
 
   const steps = [
     {
@@ -47,38 +53,45 @@ export const NewSubscriptionDialog = ({ gamesPromise }: Props) => {
       title: "Confirme sua inscrição",
       component: <ThirdStepSubscription key={3} />,
     },
-  ]
+  ];
 
   const nextStep = () => {
     setStep((step) => {
       if (step < steps.length - 1) {
-        return step + 1
+        return step + 1;
       }
-      return step
-    })
-  }
+      return step;
+    });
+  };
 
   const previousStep = () => {
     setStep((step) => {
       if (step > 0) {
-        return step - 1
+        return step - 1;
       }
-      return step
-    })
-  }
+      return step;
+    });
+  };
 
-  const currentStep = steps[step]
+  const currentStep = steps[step];
 
   const confirmPayment = async (data: SubscriptionType) => {
-    const response = await createSubscription({
-      gameId: data.gameId,
-      competitors: data.persons,
-    })
+    try {
+      const response = await createSubscription({
+        gameId: data.gameId,
+        competitors: data.persons,
+      });
 
-    if (response.initPoint) {
-      open(response.initPoint, "_blank")
+      if (!response?.initPoint) {
+        console.error("initPoint não fornecido na resposta", response);
+        return;
+      }
+
+      window.location.href = response.initPoint;
+    } catch (err) {
+      console.error("Erro ao criar inscrição:", err);
     }
-  }
+  };
 
   return (
     <Dialog>
@@ -87,7 +100,9 @@ export const NewSubscriptionDialog = ({ gamesPromise }: Props) => {
       </DialogTrigger>
       <DialogContent className="max-w-[95vw] sm:max-w-[500px] px-4 md:p-6">
         <DialogHeader>
-          <DialogTitle className="text-xs text-start mt-2 md:text-lg">{currentStep.title}</DialogTitle>
+          <DialogTitle className="text-xs text-start mt-2 md:text-lg">
+            {currentStep.title}
+          </DialogTitle>
         </DialogHeader>
         <newSubscriptionContext.Provider
           value={{
@@ -107,7 +122,13 @@ export const NewSubscriptionDialog = ({ gamesPromise }: Props) => {
             >
               {step >= 1 && (
                 <span className="flex w-full justify-start">
-                  <Button size={"sm"} variant={"secondary"} type="button" onClick={previousStep} className="w-fit mb-4">
+                  <Button
+                    size={"sm"}
+                    variant={"secondary"}
+                    type="button"
+                    onClick={previousStep}
+                    className="w-fit mb-4"
+                  >
                     <ArrowBigLeft />
                     Voltar
                   </Button>
@@ -119,5 +140,5 @@ export const NewSubscriptionDialog = ({ gamesPromise }: Props) => {
         </newSubscriptionContext.Provider>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};
