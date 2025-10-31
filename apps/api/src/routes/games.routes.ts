@@ -50,7 +50,6 @@ export const gameRoutes: FastifyPluginAsyncZod = async (app) => {
           purchasesCount: z.number(),
         })
       },
-      preHandler: [roleGuard([Role.ADMIN, Role.GAMER])],
       tags: ["Games"],
       summary: "Get a game by id",
     }

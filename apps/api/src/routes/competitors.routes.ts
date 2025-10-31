@@ -16,7 +16,6 @@ export const competitorsRoutes: FastifyPluginAsyncZod = async (app) => {
         404: z.object({ message: z.string() })
       }
     },
-    preHandler: [roleGuard([Role.GAMER])]
   }, async (request, reply) => {
     const { purchaseId } = request.params;
     const competitors = await getCompetitorsByPurchaseId(purchaseId);
