@@ -8,6 +8,8 @@ import StopWatch from "@/components/stop-watch";
 
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { Instagram } from "lucide-react";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Página Inicial",
@@ -51,8 +53,8 @@ export default async function Home() {
           <li>⚠️ Tolerância zero para quem descumprir as regras.</li>
         </ul>
       </section>
-      <section className="w-full py-10 md:px-10">
-        <h2 className="text-xl sm:text-2xl font-bold text-center xl:text-3xl mb-10">
+      <section className="w-full py-10 md:px-10 space-y-5">
+        <h2 className="text-xl sm:text-2xl font-bold text-center xl:text-3xl">
           Colaboradores
         </h2>
         <div className="flex w-full justify-center gap-5">
@@ -62,9 +64,34 @@ export default async function Home() {
             src="animesgeek.png"
             alt="logo animes geek"
           />
-          <img title="Bitmail" className="w-[50px] sm:w-[120px] md:w-[150px]" src="bitmail.png" alt="logo bit mail" />
-          <img title="Nerd Figures" className="w-[50px] sm:w-[120px] md:w-[150px] mix-blend-lighten" src="nerd_figures.png" alt="logo nerd figures" />
-          <img title="Livraria Cultural" className="w-[50px] sm:w-[120px] md:w-[150px] mix-blend-lighten" src="cultural.png" alt="logo livrario cultural" />
+          <img
+            title="Bitmail"
+            className="w-[50px] sm:w-[120px] md:w-[150px]"
+            src="bitmail.png"
+            alt="logo bit mail"
+          />
+          <img
+            title="Nerd Figures"
+            className="w-[50px] sm:w-[120px] md:w-[150px] mix-blend-lighten"
+            src="nerd_figures.png"
+            alt="logo nerd figures"
+          />
+          <img
+            title="Livraria Cultural"
+            className="w-[50px] sm:w-[120px] md:w-[150px] mix-blend-lighten"
+            src="cultural.png"
+            alt="logo livrario cultural"
+          />
+        </div>
+        <div className="flex flex-col sm:flex-row gap-1 sm:gap-5 w-full justify-center items-center text-xs">
+          <Link className="flex gap-1 sm:gap-2 items-center" href={"https://www.instagram.com/adsunifacema/"}>
+            <Instagram className="size-5 sm:size-6" />
+            Ads Unifacema
+          </Link>
+          <Link className="flex gap-1 sm:gap-2 items-center" href={"https://www.instagram.com/unifacema.centro/"}>
+            <Instagram className="size-5 sm:size-6" />
+            Unifacema
+          </Link>
         </div>
       </section>
       <footer className="w-full text-center text-xs sm:text-start sm:text-lg p-10 px-5 md:px-10 bg-secondary-foreground flex flex-col items-center">
