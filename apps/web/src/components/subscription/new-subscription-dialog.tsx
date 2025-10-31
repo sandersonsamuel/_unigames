@@ -21,6 +21,7 @@ import { Form } from "../ui/form";
 import { FirstStepSubscription } from "./first-step-subscription";
 import { SecondStepSubscription } from "./second-step-subscription";
 import { ThirdStepSubscription } from "./third-step-subscription";
+import toast from "react-hot-toast";
 
 type Props = {
   gamesPromise: Promise<GameResponseType[]>;
@@ -84,12 +85,14 @@ export const NewSubscriptionDialog = ({ gamesPromise }: Props) => {
 
       if (!response?.initPoint) {
         console.error("initPoint não fornecido na resposta", response);
+        toast.error("Erro: Não foi possível iniciar o pagamento. Tente novamente.");
         return;
       }
 
       window.location.href = response.initPoint;
     } catch (err) {
       console.error("Erro ao criar inscrição:", err);
+      toast.error("Erro ao criar inscrição. Verifique sua conexão e tente novamente.");
     }
   };
 

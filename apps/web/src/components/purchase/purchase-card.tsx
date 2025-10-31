@@ -20,13 +20,13 @@ export function PurchaseCard({ purchase }: PurchaseCardProps) {
 
   const redirectToInitPoint = () => {
     if (purchase.paymentStatus === PaymentStatus.PENDING) {
-      open(purchase.initPoint, "_blank");
+      window.location.href = purchase.initPoint;
     }
   };
 
   if (purchase.paymentStatus === PaymentStatus.PENDING) {
     return (
-      <button className="text-start" onClick={redirectToInitPoint}>
+      <button className="text-start" onClick={redirectToInitPoint} disabled={!purchase.initPoint}>
         <Card className="cursor-pointer hover:bg-accent/35 transition-colors duration-200 hover:shadow-md">
           <CardHeader className="px-3 md:px-6">
             <div className="flex flex-wrap items-center justify-between">
